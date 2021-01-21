@@ -41,6 +41,17 @@ docker {
     }
 }
 
+tasks.create<Copy>("copyConfig") {
+    dependsOn(":Database:dockerSyncBuildContext")
+    from(fileTree("liquibase"))
+    into(file("$buildDir/docker/liquibase"))
+}
+
+tasks.named<com.bmuschko.gradle.docker.tasks.image.Dockerfile>("dockerCreateDockerfile") {
+    dependsOn(":Database:copyConfig")
+    copyFile("liquibase", "/app/liquibase")
+}
+
 application {
     mainClass.set("com.liquidforte.terra.database.DBMain")
 }
