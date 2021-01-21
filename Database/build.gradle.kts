@@ -1,5 +1,5 @@
 plugins {
-    id("com.bmuschko.docker-java-application") version "6.7.0"
+    id("com.bmuschko.docker-java-application") version("6.7.0")
     application
 }
 
@@ -26,6 +26,8 @@ dependencies {
     implementation("org.jooq:jooq-codegen:3.14.4")
     implementation("org.jooq:jooq-xtend:3.14.4")
 
+    implementation("org.hibernate:hibernate:3.6.0.Beta2")
+
     implementation("org.liquibase:liquibase-core:4.2.2")
 
     implementation("com.h2database:h2:1.4.200")
@@ -39,6 +41,17 @@ docker {
         baseImage.set("adoptopenjdk/openjdk14:debian")
         images.set(listOf("liquidforte/terra/database:latest"))
     }
+}
+
+tasks.create<Copy>("copyConfig") {
+    dependsOn(":Database:dockerSyncBuildContext")
+    from(fileTree("liquibase"))
+    into(file("$buildDir/docker/liquibase"))
+}
+
+tasks.named<com.bmuschko.gradle.docker.tasks.image.Dockerfile>("dockerCreateDockerfile") {
+    dependsOn(":Database:copyConfig")
+    copyFile("liquibase", "/app/liquibase")
 }
 
 application {

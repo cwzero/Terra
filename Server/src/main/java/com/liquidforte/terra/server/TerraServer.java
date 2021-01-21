@@ -14,6 +14,6 @@ public class TerraServer extends Application<TerraConfiguration> {
 
     @Override
     public void run(TerraConfiguration configuration, Environment environment) throws Exception {
-
+        
     }
 }
