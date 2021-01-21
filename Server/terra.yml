@@ -1,0 +1,11 @@
+---
+database:
+  driverClass: org.postgresql.Driver
+  user: postgres
+  password: terra
+  url: jdbc:postgresql://postgres/terra
+  properties:
+    charSet: UTF-8
+  maxWaitForConnection: 1s
+  minSize: 8
+  maxSize: 32
