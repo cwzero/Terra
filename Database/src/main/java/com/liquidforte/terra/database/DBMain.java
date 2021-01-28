@@ -16,7 +16,7 @@ public class DBMain {
         var connection = new ServerDatabase().getDataSource().getConnection();
         var database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
         var changelog = new DatabaseChangeLog("liquibase/changelog.yml");
-        Liquibase liquibase = new liquibase.Liquibase(changelog, new ClassLoaderResourceAccessor(), database);
+        var liquibase = new Liquibase(changelog, new ClassLoaderResourceAccessor(), database);
         liquibase.update(new Contexts(), new LabelExpression());
     }
 }

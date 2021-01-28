@@ -40,6 +40,7 @@ public class ServerDatabase extends AbstractDatabase {
                 ex.printStackTrace();
             }
         }
+
         var result = new PGSimpleDataSource();
         result.setServerNames(new String[]{"postgres"});
         result.setDatabaseName("terra");

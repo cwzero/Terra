@@ -23,6 +23,8 @@ allprojects {
 		implementation("io.vavr:vavr-match:0.10.3")
 		implementation("io.vavr:vavr-match-processor:0.10.3")
 
+		implementation("org.jooq:jool:0.9.14")
+
 		testImplementation("io.vavr:vavr-test:0.10.3")
 
 		testImplementation(platform("org.junit:junit-bom:5.7.0"))
