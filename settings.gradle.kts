@@ -4,6 +4,4 @@ includeBuild("../CurseClient") {
     }
 }
 
-include("Client", "Common", "Database", "Model", "Server")
-
 rootProject.name = "Terra"

@@ -1,6 +1,7 @@
 plugins {
 	id("com.github.ben-manes.versions") version "0.36.0"
 	id("java-library")
+	id("application")
 }
 
 allprojects {
@@ -39,4 +40,25 @@ allprojects {
 	tasks.withType<Test> {
 		useJUnitPlatform()
 	}
+}
+
+dependencies {
+	implementation("com.liquidforte.terra:CurseClient:0.0.1-SNAPSHOT")
+
+	implementation("com.zaxxer:HikariCP:3.4.5")
+
+	implementation(platform("org.jdbi:jdbi3-bom:3.18.0"))
+	implementation("org.jdbi:jdbi3-vavr")
+	implementation("org.jdbi:jdbi3-jpa")
+	implementation("org.jdbi:jdbi3-jackson2")
+	implementation("org.jdbi:jdbi3-commons-text")
+	implementation("org.jdbi:jdbi3-sqlobject")
+	implementation("org.jdbi:jdbi3-stringtemplate4")
+	implementation("org.jdbi:jdbi3-guava")
+
+	implementation("com.h2database:h2:1.4.200")
+}
+
+application {
+	mainClass.set("com.liquidforte.terra.main.Main")
 }
