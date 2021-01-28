@@ -17,10 +17,11 @@ allprojects {
 		annotationProcessor("org.projectlombok:lombok:1.18.16")
 		compileOnly("org.projectlombok:lombok:1.18.16")
 
-		implementation("com.google.guava:guava:29.0-jre")
+		implementation("com.google.guava:guava:30.1-jre")
+		implementation("com.google.inject:guice:5.0.0-BETA-1")
 
-		implementation("io.vavr:vavr:0.10.3")
-		implementation("io.vavr:vavr-jackson:0.10.3")
+		implementation("io.vavr:vavr:1.0.0-alpha-3")
+		implementation("io.vavr:vavr-jackson:1.0.0-alpha-3")
 		implementation("io.vavr:vavr-match:0.10.3")
 		implementation("io.vavr:vavr-match-processor:0.10.3")
 
@@ -34,7 +35,7 @@ allprojects {
 		testImplementation("org.mockito:mockito-core:3.7.7")
 		testImplementation("org.mockito:mockito-junit-jupiter:3.7.7")
 
-		testImplementation("org.assertj:assertj-core:3.18.1")
+		testImplementation("org.assertj:assertj-core:3.19.0")
 	}
 
 	tasks.withType<Test> {
@@ -45,7 +46,7 @@ allprojects {
 dependencies {
 	implementation("com.liquidforte.terra:CurseClient:0.0.1-SNAPSHOT")
 
-	implementation("com.zaxxer:HikariCP:3.4.5")
+	implementation("com.zaxxer:HikariCP:4.0.1")
 
 	implementation(platform("org.jdbi:jdbi3-bom:3.18.0"))
 	implementation("org.jdbi:jdbi3-vavr")
