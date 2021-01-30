@@ -1,4 +1,4 @@
-package com.liquidforte.terra.core.inject;
+package com.liquidforte.terra.inject;
 
 import com.google.inject.AbstractModule;
 
