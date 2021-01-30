@@ -49,4 +49,5 @@ application {
 
 tasks.named<JavaExec>("run") {
     workingDir = file("run")
+    args = listOf("resolve")
 }

@@ -9,7 +9,6 @@ import com.liquidforte.terra.database.inject.DatabaseModule;
 import com.liquidforte.terra.inject.AppModule;
 import com.liquidforte.terra.inject.CommandModule;
 import com.liquidforte.terra.inject.CoreModule;
-import com.liquidforte.terra.inject.JacksonModule;
 import com.netflix.governator.guice.LifecycleInjector;
 import com.netflix.governator.lifecycle.LifecycleManager;
 
@@ -22,15 +21,19 @@ public class Main {
                         new CoreModule(),
                         new CurseClientModule(),
                         new DatabaseModule(),
-                        new JacksonModule(),
+                        //new JacksonModule(),
                         new TerraClientModule())
                 .build().createInjector();
 
         try (LifecycleManager manager = injector.getInstance(LifecycleManager.class)) {
             manager.start();
 
-            CommandParser parser = injector.getInstance(CommandParser.class);
-            parser.parse(args).run();
+            runApp(injector, args);
         }
+    }
+
+    public static void runApp(Injector injector, String[] args) {
+        CommandParser parser = injector.getInstance(CommandParser.class);
+        parser.parse(args).run();
     }
 }

@@ -1,0 +1,9 @@
+{
+  "packName": "terraTest",
+  "packVersion": "0.0.1-SNAPSHOT",
+  "packAuthors": [
+    "code_wizard_zero"
+  ],
+  "minecraftVersion": "1.16.5",
+  "forgeVersion": "latest"
+}

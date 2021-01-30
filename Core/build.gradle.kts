@@ -12,4 +12,6 @@ dependencies {
     api("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.1")
 
     api("commons-cli:commons-cli:1.4")
+    api("commons-io:commons-io:2.8.0")
+    //api("org.apache.commons:commons-jexl3:3.1")
 }
