@@ -1,12 +1,14 @@
 package com.liquidforte.terra.cache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.liquidforte.terra.api.cache.LockCache;
 import com.liquidforte.terra.api.cache.ModCache;
 import com.liquidforte.terra.api.config.AppConfig;
-import com.liquidforte.terra.api.options.AppOptions;
+import com.liquidforte.terra.api.options.AppPaths;
 import com.liquidforte.terra.api.service.FileService;
+import com.liquidforte.terra.api.service.ForgeService;
 import com.liquidforte.terra.api.storage.LockStorage;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,11 +24,40 @@ public class LockCacheImpl implements LockCache {
     private static final Logger LOG = LoggerFactory.getLogger(LockCacheImpl.class);
 
     private final AppConfig appConfig;
-    private final AppOptions appOptions;
+    private final AppPaths appPaths;
     private final ObjectMapper mapper;
     private final ModCache modCache;
     private final LockStorage lockStorage;
     private final FileService fileService;
+    private final ForgeService forgeService;
+
+    @Override
+    public String getForgeLock() {
+        String minecraftVersion = appConfig.getMinecraftVersion();
+        String forgeVersion = lockStorage.getForgeLock(minecraftVersion);
+
+        if (Strings.isNullOrEmpty(forgeVersion) || forgeVersion.contentEquals("latest")) {
+            forgeVersion = updateForgeLock();
+        }
+
+        return forgeVersion;
+    }
+
+    @Override
+    public String updateForgeLock() {
+        String minecraftVersion = appConfig.getMinecraftVersion();
+        String forgeVersion = forgeService.getForgeVersion(minecraftVersion);
+
+        lockStorage.setForgeLock(minecraftVersion, forgeVersion);
+
+        return forgeVersion;
+    }
+
+    @Override
+    public void setForgeLock(String forgeVersion) {
+        String minecraftVersion = appConfig.getMinecraftVersion();
+        lockStorage.setForgeLock(minecraftVersion, forgeVersion);
+    }
 
     @Override
     public long getLock(String slug) {
@@ -70,7 +101,7 @@ public class LockCacheImpl implements LockCache {
     public void load() {
         LOG.info("Loading lock cache");
 
-        Path lockPath = appOptions.getLockPath();
+        Path lockPath = appPaths.getLockPath();
         File lockFile = lockPath.toFile();
         File lockDir = lockFile.getParentFile();
 
@@ -83,6 +114,12 @@ public class LockCacheImpl implements LockCache {
                 PackLock packLock = mapper.readValue(lockFile, PackLock.class);
 
                 if (packLock.getMinecraftVersion().contentEquals(appConfig.getMinecraftVersion())) {
+                    String forgeLock = lockStorage.getForgeLock(appConfig.getMinecraftVersion());
+
+                    if (Strings.isNullOrEmpty(forgeLock) || !forgeLock.contentEquals(packLock.getForgeVersion())) {
+                        lockStorage.setForgeLock(appConfig.getMinecraftVersion(), packLock.getForgeVersion());
+                    }
+
                     for (long addonId : packLock.getLock().keySet()) {
                         long fileId = packLock.getLock().get(addonId);
 
@@ -101,7 +138,7 @@ public class LockCacheImpl implements LockCache {
     public void save() {
         LOG.info("Saving lock cache");
 
-        Path lockPath = appOptions.getLockPath();
+        Path lockPath = appPaths.getLockPath();
         File lockFile = lockPath.toFile();
         File lockDir = lockFile.getParentFile();
 
@@ -118,6 +155,7 @@ public class LockCacheImpl implements LockCache {
         }
 
         PackLock packLock = new PackLock();
+        packLock.setForgeVersion(getForgeLock());
         packLock.setMinecraftVersion(appConfig.getMinecraftVersion());
         Map<Long, Long> lock = lockStorage.getLocks();
         packLock.setLock(lock);

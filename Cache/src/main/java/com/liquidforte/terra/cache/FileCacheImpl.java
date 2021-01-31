@@ -3,9 +3,8 @@ package com.liquidforte.terra.cache;
 import com.google.inject.Inject;
 import com.liquidforte.terra.api.cache.FileCache;
 import com.liquidforte.terra.api.cache.LockCache;
-import com.liquidforte.terra.api.config.AppConfig;
 import com.liquidforte.terra.api.model.File;
-import com.liquidforte.terra.api.options.AppOptions;
+import com.liquidforte.terra.api.options.AppPaths;
 import com.liquidforte.terra.api.service.FileService;
 import com.liquidforte.terra.api.storage.FileStorage;
 import com.liquidforte.terra.util.FingerprintUtil;
@@ -17,8 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class FileCacheImpl implements FileCache {
-    private final AppConfig appConfig;
-    private final AppOptions appOptions;
+    private final AppPaths appPaths;
     private final FileStorage fileStorage;
     private final FileService fileService;
     private final LockCache lockCache;
@@ -58,7 +56,7 @@ public class FileCacheImpl implements FileCache {
         File file = getFile(addonId, fileId);
         byte[] data = getFileData(addonId, fileId);
 
-        Path targetPath = appOptions.getModsPath().resolve(file.getFileName());
+        Path targetPath = appPaths.getMCModsPath().resolve(file.getFileName());
         java.io.File targetFile = targetPath.toFile();
         java.io.File modsDir = targetFile.getParentFile();
 

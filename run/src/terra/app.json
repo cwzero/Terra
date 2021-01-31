@@ -1,14 +1,11 @@
 {
-  "packName": "terraTest",
-  "packVersion": "0.0.1-SNAPSHOT",
-  "packAuthors": [
-    "code_wizard_zero"
-  ],
-  "minecraftVersion": "1.12.2",
-  "alternateVersions": [
-    "1.12.2",
+  "forgeVersion" : "latest",
+  "packAuthors" : [ ],
+  "packVersion" : "0.0.1-SNAPSHOT",
+  "minecraftVersion" : "1.12.2",
+  "packName" : "terraTest",
+  "alternateVersions" : [
     "1.12.1",
     "1.12"
-  ],
-  "forgeVersion": "latest"
+  ]
 }

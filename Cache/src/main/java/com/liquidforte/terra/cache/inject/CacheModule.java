@@ -12,8 +12,8 @@ import com.liquidforte.terra.cache.ModCacheImpl;
 public class CacheModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(FileCache.class).to(FileCacheImpl.class).in(Singleton.class);
-        bind(LockCache.class).to(LockCacheImpl.class).in(Singleton.class);
-        bind(ModCache.class).to(ModCacheImpl.class).in(Singleton.class);
+        bind(FileCache.class).to(FileCacheImpl.class);
+        bind(LockCache.class).to(LockCacheImpl.class);
+        bind(ModCache.class).to(ModCacheImpl.class);
     }
 }

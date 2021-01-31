@@ -12,5 +12,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class PackLock {
     private String minecraftVersion = "";
+    private String forgeVersion = "";
     private Map<Long, Long> lock = new HashMap<>();
 }

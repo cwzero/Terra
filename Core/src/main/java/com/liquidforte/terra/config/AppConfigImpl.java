@@ -20,4 +20,6 @@ public class AppConfigImpl implements AppConfig {
     private String minecraftVersion;
     private List<String> alternateVersions = new ArrayList<>();
     private String forgeVersion;
+    private String minMemory = "6144";
+    private String maxMemory = "8192";
 }

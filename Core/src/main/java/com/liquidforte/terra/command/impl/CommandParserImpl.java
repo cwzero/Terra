@@ -1,4 +1,4 @@
-package com.liquidforte.terra.command;
+package com.liquidforte.terra.command.impl;
 
 import com.google.inject.Inject;
 import com.liquidforte.terra.api.command.Command;
@@ -15,5 +15,10 @@ public class CommandParserImpl implements CommandParser {
     @Override
     public Command parse() {
         return commandFactory.createCommand(commandContext);
+    }
+
+    @Override
+    public Command parse(String... commands) {
+        return commandFactory.createCommand(commandContext, commands);
     }
 }

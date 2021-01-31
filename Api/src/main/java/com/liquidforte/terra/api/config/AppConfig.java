@@ -10,4 +10,7 @@ public interface AppConfig {
     String getMinecraftVersion();
     List<String> getAlternateVersions();
     String getForgeVersion();
+
+    String getMinMemory();
+    String getMaxMemory();
 }

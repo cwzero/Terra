@@ -7,7 +7,7 @@ import com.liquidforte.terra.api.model.ModSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ResolveCommand extends AbstractCommand {
+public class ResolveCommand extends LockCommand {
     private static final Logger LOG = LoggerFactory.getLogger(ResolveCommand.class);
 
     @Inject
@@ -16,7 +16,7 @@ public class ResolveCommand extends AbstractCommand {
     }
 
     @Override
-    public void run() {
+    public void doRun() {
         LOG.info("Resolve Command running!");
 
         for (Group group : getGroupLoader().loadGroups()) {

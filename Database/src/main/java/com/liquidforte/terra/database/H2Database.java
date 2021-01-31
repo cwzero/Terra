@@ -23,9 +23,9 @@ public class H2Database implements Database {
 
     private String getPath() {
         if (isLocal) {
-            return appOptions.getLocalCachePathString() + "/" + name;
+            return appOptions.getLocalCachePath() + "/" + name;
         } else {
-            return appOptions.getCachePathString() + "/" + name;
+            return appOptions.getCachePath() + "/" + name;
         }
     }
 

@@ -5,6 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.liquidforte.terra.api.curse.AddonSearchAPI;
 import com.liquidforte.terra.api.curse.CurseFileAPI;
+import com.liquidforte.terra.api.curse.ForgeSearchAPI;
 import feign.Feign;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
@@ -45,5 +46,10 @@ public class FeignModule extends AbstractModule {
     @Provides
     public CurseFileAPI getCurseFileAPI(FeignClient feignClient) {
         return feignClient.target(CurseFileAPI.class, BASE_URL);
+    }
+
+    @Provides
+    public ForgeSearchAPI getForgeSearchAPI(FeignClient feignClient) {
+        return feignClient.target(ForgeSearchAPI.class, BASE_URL);
     }
 }

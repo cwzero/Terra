@@ -1,9 +1,10 @@
-package com.liquidforte.terra.command;
+package com.liquidforte.terra.command.impl;
 
 import com.google.inject.Inject;
 import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandContext;
 import com.liquidforte.terra.api.command.CommandFactory;
+import com.liquidforte.terra.command.CompositeCommand;
 
 import java.util.Arrays;
 import java.util.Set;

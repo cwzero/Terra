@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.liquidforte.terra.api.model.Group;
-import com.liquidforte.terra.api.options.AppOptions;
+import com.liquidforte.terra.api.options.AppPaths;
 import com.liquidforte.terra.model.GroupImpl;
 import com.liquidforte.terra.util.FileUtil;
 import org.apache.commons.io.FileUtils;
@@ -16,21 +16,21 @@ import java.util.List;
 
 public class GroupLoaderImpl implements com.liquidforte.terra.api.loader.GroupLoader {
     private ObjectMapper mapper;
-    private AppOptions options;
+    private AppPaths appPaths;
 
     @Inject
-    public GroupLoaderImpl(ObjectMapper mapper, AppOptions options) {
+    public GroupLoaderImpl(ObjectMapper mapper, AppPaths appPaths) {
         this.mapper = mapper;
-        this.options = options;
+        this.appPaths = appPaths;
     }
 
     @Override
     public List<Group> loadGroups() {
         List<Group> result = new ArrayList<>();
 
-        File groupsDir = options.getGroupsPath().toFile();
+        File groupsDir = appPaths.getGroupsPath().toFile();
         groupsDir.mkdirs();
-        String[] extensions = { "json" };
+        String[] extensions = {"json"};
 
         for (File groupFile : FileUtils.listFiles(groupsDir, extensions, true)) {
             try {

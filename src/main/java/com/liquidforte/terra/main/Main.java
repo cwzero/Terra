@@ -1,8 +1,6 @@
 package com.liquidforte.terra.main;
 
 import com.google.inject.Injector;
-import com.liquidforte.terra.api.cache.LockCache;
-import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandParser;
 import com.liquidforte.terra.api.database.DatabaseServer;
 import com.liquidforte.terra.cache.inject.CacheModule;
@@ -38,16 +36,10 @@ public class Main {
 
     public static void runApp(Injector injector) {
         try (DatabaseServer databaseServer = injector.getInstance(DatabaseServer.class)) {
-            LockCache lockCache = injector.getInstance(LockCache.class);
-
             databaseServer.start();
-            lockCache.load();
 
             CommandParser parser = injector.getInstance(CommandParser.class);
-            Command command = parser.parse();
-            command.run();
-
-            lockCache.save();
+            parser.run();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

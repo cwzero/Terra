@@ -7,7 +7,6 @@ import com.liquidforte.terra.api.model.File;
 import com.liquidforte.terra.api.storage.FileStorage;
 import com.liquidforte.terra.util.FingerprintUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FileStorageImpl implements FileStorage {

@@ -1,26 +1,39 @@
 package com.liquidforte.terra.api.options;
 
-import java.nio.file.Path;
-
 public interface AppOptions {
     String[] getCommand();
 
     boolean isLocal();
 
-    String getLockPathString();
+    String getServerPath();
 
-    Path getLockPath();
+    String getGlobalPath();
 
-    Path getAppConfigPath();
+    String getMMCPath();
 
-    Path getGroupsPath();
-    Path getModsPath();
+    String getSrcPath();
 
-    String getLocalCachePathString();
+    String getMCPath();
 
-    String getCachePathString();
+    String getTerraPath();
 
-    Path getCachePath();
+    String getLockPath();
 
-    Path getLocalCachePath();
+    String getAppConfigPath();
+
+    String getGroupsPath();
+
+    String getModsPath();
+
+    String getConfigPath();
+
+    String getResourcesPath();
+
+    String getSavesPath();
+
+    String getScriptsPath();
+
+    String getLocalCachePath();
+
+    String getCachePath();
 }

@@ -6,11 +6,16 @@ import com.liquidforte.terra.api.cache.ModCache;
 import com.liquidforte.terra.api.config.AppConfig;
 import com.liquidforte.terra.api.loader.GroupLoader;
 import com.liquidforte.terra.api.options.AppOptions;
+import com.liquidforte.terra.api.options.AppPaths;
 
 public interface CommandContext {
-    AppOptions getAppOptions();
+    CommandParser getCommandParser();
 
     AppConfig getAppConfig();
+
+    AppOptions getAppOptions();
+
+    AppPaths getAppPaths();
 
     FileCache getFileCache();
 

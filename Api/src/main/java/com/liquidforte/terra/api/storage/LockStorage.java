@@ -8,4 +8,8 @@ public interface LockStorage {
     void setLock(long addonId, long fileId);
 
     Map<Long, Long> getLocks();
+
+    String getForgeLock(String minecraftVersion);
+
+    void setForgeLock(String minecraftVersion, String forgeVersion);
 }

@@ -1,0 +1,6 @@
+src/minecraft/mods/
+src/minecraft/saves/
+src/minecraft/config/
+src/terra/pack.lock
+server/
+instance

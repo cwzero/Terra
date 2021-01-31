@@ -14,7 +14,12 @@ public class CompositeCommand extends AbstractCommand {
     }
 
     @Override
-    public void run() {
+    protected void before() {
+
+    }
+
+    @Override
+    public void doRun() {
         for (Command command : commands) {
             command.run();
         }

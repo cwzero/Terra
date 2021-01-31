@@ -7,7 +7,7 @@ import com.liquidforte.terra.api.model.ModSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DownloadCommand extends AbstractCommand {
+public class DownloadCommand extends LockCommand {
     private static final Logger LOG = LoggerFactory.getLogger(DownloadCommand.class);
 
     @Inject
@@ -16,7 +16,7 @@ public class DownloadCommand extends AbstractCommand {
     }
 
     @Override
-    public void run() {
+    public void doRun() {
         LOG.info("Download Command running!");
 
         for (Group group : getGroupLoader().loadGroups()) {

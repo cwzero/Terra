@@ -8,11 +8,11 @@ public interface Command extends Runnable {
             name = name.substring(name.lastIndexOf(".") + 1);
         }
 
-        if (name.contains("Command")) {
-            name = name.replace("Command", "");
+        if (name.endsWith("Command")) {
+            name = name.substring(0, name.lastIndexOf("Command"));
         }
 
-        return name.toLowerCase();
+        return name.toLowerCase().charAt(0) + name.substring(1);
     }
 
     default String[] getAlias() {

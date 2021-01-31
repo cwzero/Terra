@@ -1,8 +1,10 @@
 package com.liquidforte.terra.storage;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.liquidforte.terra.api.database.Database;
 import com.liquidforte.terra.api.database.DatabaseFactory;
+import com.liquidforte.terra.api.database.ForgeDao;
 import com.liquidforte.terra.api.database.LockDao;
 import com.liquidforte.terra.api.storage.LockStorage;
 
@@ -17,6 +19,7 @@ public class LockStorageImpl implements LockStorage {
     public LockStorageImpl(DatabaseFactory databaseFactory) {
         this.lockDatabase = databaseFactory.create(true, true, "lock");
         lockDatabase.getJdbi().useExtension(LockDao.class, dao -> dao.createTable());
+        lockDatabase.getJdbi().useExtension(ForgeDao.class, dao -> dao.createTable());
     }
 
     @Override
@@ -55,5 +58,21 @@ public class LockStorageImpl implements LockStorage {
         });
 
         return result;
+    }
+
+    @Override
+    public String getForgeLock(String minecraftVersion) {
+        try {
+            return lockDatabase.getJdbi().withExtension(ForgeDao.class, dao -> dao.getForgeVersion(minecraftVersion));
+        } catch (IllegalStateException ex) {
+        }
+        return null;
+    }
+
+    @Override
+    public void setForgeLock(String minecraftVersion, String forgeVersion) {
+        if (!Strings.isNullOrEmpty(minecraftVersion) && !Strings.isNullOrEmpty(forgeVersion)) {
+            lockDatabase.getJdbi().useExtension(ForgeDao.class, dao -> dao.insert(minecraftVersion, forgeVersion));
+        }
     }
 }
