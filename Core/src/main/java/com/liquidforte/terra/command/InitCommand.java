@@ -6,6 +6,7 @@ import com.liquidforte.terra.api.command.CommandContext;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,10 +31,14 @@ public class InitCommand extends AbstractCommand {
 
         try {
             PrintStream out = new PrintStream(new FileOutputStream(gitIgnoreFile), true);
-            out.println("/src/mods/");
-            out.println("/src/saves/");
-            out.println("/server/");
-            out.println("/instance/");
+            String[] ignore = {
+                "/src/minecraft/mods/",
+                "/src/minecraft/saves/",
+                "/server/",
+                "/instance"
+            };
+
+            Arrays.stream(ignore).forEach(out::println);
             out.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

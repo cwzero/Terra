@@ -19,7 +19,13 @@ public class CommandFactoryImpl implements CommandFactory {
 
     @Override
     public Command createCommand(CommandContext context) {
-        return createCommand(context, context.getAppOptions().getCommand());
+        String[] cos = context.getAppOptions().getCommand();
+
+        if (cos.length <= 0) {
+            return createCommand(context, "commands");
+        } else {
+            return createCommand(context, cos);
+        }
     }
 
     @Override

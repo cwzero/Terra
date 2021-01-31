@@ -2,6 +2,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.36.0"
     id("java-library")
     id("application")
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 allprojects {
@@ -44,10 +45,18 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.liquidforte.terra.main.Main")
+    @Suppress("DEPRECATION")
+    mainClassName = "com.liquidforte.terra.main.Main"
 }
 
 tasks.named<JavaExec>("run") {
     workingDir = file("run")
     args = listOf("runMMCInstance")
+}
+
+tasks.register<Copy>("install") {
+    dependsOn("installDist")
+
+    from(file("$buildDir/install/Terra"))
+    into(file("${System.getProperty("user.home")}/.terra"))
 }
