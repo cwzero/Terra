@@ -23,19 +23,31 @@ public class CommandFactoryImpl implements CommandFactory {
 
     @Override
     public Command createCommand(CommandContext context, String[] command) {
-        Command[] commands = new Command[command.length];
-
-        for (int i = 0; i < command.length; i++) {
-            commands[i] = createCommand(context, command[i]);
+        if (command.length <= 0) {
+            return null;
         }
 
-        return new CompositeCommand(context, commands);
+        if (command.length > 1) {
+            Command[] commands = new Command[command.length];
+
+            for (int i = 0; i < command.length; i++) {
+                commands[i] = createCommand(context, command[i]);
+            }
+
+            return new CompositeCommand(context, commands);
+        }
+
+        return createCommand(context, command[0]);
     }
 
     @Override
     public Command createCommand(CommandContext context, String command) {
-        return commands.stream().filter(it ->
-                it.getCommand().contentEquals(command) ||
-                        Arrays.stream(it.getAlias()).anyMatch(c -> c.contentEquals(command))).findFirst().orElse(null);
+        for (Command co : commands) {
+            if (co.getCommand().contentEquals(command) || Arrays.stream(co.getAlias()).anyMatch(c -> c.contentEquals(command))) {
+                return co;
+            }
+        }
+
+        return null;
     }
 }

@@ -18,5 +18,6 @@ public class AppConfigImpl implements AppConfig {
     private String packVersion;
     private List<String> packAuthors = new ArrayList<>();
     private String minecraftVersion;
+    private List<String> alternateVersions = new ArrayList<>();
     private String forgeVersion;
 }

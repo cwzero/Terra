@@ -1,5 +1,7 @@
 package com.liquidforte.terra.api.database;
 
+import com.google.inject.assistedinject.Assisted;
+
 public interface DatabaseFactory {
-    Database create(boolean inMemory, boolean isLocal, String name);
+    Database create(@Assisted("inMemory") boolean inMemory, @Assisted("isLocal") boolean isLocal, @Assisted("name") String name);
 }

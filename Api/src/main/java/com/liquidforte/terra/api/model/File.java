@@ -13,6 +13,7 @@ public class File {
     private long fileId = -1;
     private String fileName = "";
     private Date fileDate;
+    private long fileLength = -1;
     private String downloadUrl = "";
     private long fingerprint = -1;
 }

@@ -6,9 +6,6 @@ public interface LockCache {
     long update(String slug);
     long update(long addonId);
 
-    long getFile(String slug);
-    long getFile(long addonId);
-
     void load();
     void save();
     void updateAll();

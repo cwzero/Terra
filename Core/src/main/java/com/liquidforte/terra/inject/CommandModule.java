@@ -6,10 +6,7 @@ import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandContext;
 import com.liquidforte.terra.api.command.CommandFactory;
 import com.liquidforte.terra.api.command.CommandParser;
-import com.liquidforte.terra.command.CommandContextImpl;
-import com.liquidforte.terra.command.CommandFactoryImpl;
-import com.liquidforte.terra.command.CommandParserImpl;
-import com.liquidforte.terra.command.ResolveCommand;
+import com.liquidforte.terra.command.*;
 
 public class CommandModule extends AbstractModule {
     @Override
@@ -20,5 +17,7 @@ public class CommandModule extends AbstractModule {
 
         Multibinder<Command> commandBinder = Multibinder.newSetBinder(binder(), Command.class);
         commandBinder.addBinding().to(ResolveCommand.class);
+        commandBinder.addBinding().to(DownloadCommand.class);
+        commandBinder.addBinding().to(InstallCommand.class);
     }
 }

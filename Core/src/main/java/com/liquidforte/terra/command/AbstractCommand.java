@@ -5,17 +5,13 @@ import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandContext;
 
 public abstract class AbstractCommand implements Command {
-    protected CommandContext context;
-
-    protected AbstractCommand() {
-
-    }
+    private final CommandContext context;
 
     protected AbstractCommand(CommandContext context) {
         this.context = context;
     }
 
-    protected void setContext(CommandContext context) {
-        this.context = context;
+    protected CommandContext getContext() {
+        return context;
     }
 }

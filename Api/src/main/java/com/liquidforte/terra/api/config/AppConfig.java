@@ -8,5 +8,6 @@ public interface AppConfig {
     List<String> getPackAuthors();
 
     String getMinecraftVersion();
+    List<String> getAlternateVersions();
     String getForgeVersion();
 }

@@ -7,10 +7,18 @@ public interface AppOptions {
 
     boolean isLocal();
 
+    String getLockPathString();
+
+    Path getLockPath();
+
     Path getAppConfigPath();
 
     Path getGroupsPath();
     Path getModsPath();
+
+    String getLocalCachePathString();
+
+    String getCachePathString();
 
     Path getCachePath();
 

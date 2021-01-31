@@ -13,7 +13,7 @@ public class CommandParserImpl implements CommandParser {
     private final CommandFactory commandFactory;
 
     @Override
-    public Command parse(String... args) {
+    public Command parse() {
         return commandFactory.createCommand(commandContext);
     }
 }

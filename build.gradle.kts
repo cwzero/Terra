@@ -14,8 +14,8 @@ allprojects {
     }
 
     dependencies {
-        annotationProcessor("org.projectlombok:lombok:1.18.16")
-        compileOnly("org.projectlombok:lombok:1.18.16")
+        annotationProcessor("org.projectlombok:lombok:1.18.18")
+        compileOnly("org.projectlombok:lombok:1.18.18")
 
         testImplementation(platform("org.junit:junit-bom:5.7.0"))
         testImplementation("org.junit.jupiter:junit-jupiter")
@@ -23,7 +23,7 @@ allprojects {
         testImplementation("org.mockito:mockito-core:3.7.7")
         testImplementation("org.mockito:mockito-junit-jupiter:3.7.7")
 
-        testImplementation("org.assertj:assertj-core:3.18.1")
+        testImplementation("org.assertj:assertj-core:3.19.0")
     }
 
     tasks.withType<Test> {
@@ -49,5 +49,5 @@ application {
 
 tasks.named<JavaExec>("run") {
     workingDir = file("run")
-    args = listOf("resolve")
+    args = listOf("install")
 }

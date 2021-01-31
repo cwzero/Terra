@@ -13,35 +13,32 @@ public class AppOptionsImpl implements AppOptions {
         if (options == null) {
             options = new Options();
 
-            Option appConfigPathOption = new Option("appConfigPath", "acp", true, "Path to app config app.json");
+            Option appConfigPathOption = new Option("ACP", "appConfigPath", true, "Path to app config app.json");
             options.addOption(appConfigPathOption);
 
-            Option groupsPathOption = new Option("groupsPath", "gp", true, "Path to groups/");
+            Option groupsPathOption = new Option("GP", "groupsPath", true, "Path to groups dir");
             options.addOption(groupsPathOption);
 
-            Option modsPathOption = new Option("modsPath", "mp", true, "Path to mods/");
+            Option modsPathOption = new Option("MP", "modsPath", true, "Path to mods dir");
             options.addOption(modsPathOption);
 
-            Option cachePathOption = new Option("cachePath", "cp", true, "path to cache");
+            Option cachePathOption = new Option("CP", "cachePath", true, "path to cache");
             options.addOption(cachePathOption);
 
-            Option localCachePathOption = new Option("localCachePath", "lcp", true, "path to local cache");
+            Option localCachePathOption = new Option("LCP", "localCachePath", true, "path to local cache");
             options.addOption(localCachePathOption);
 
-            Option localOption = new Option("local", "L", false, "run in local mode");
+            Option localOption = new Option("L", "local", false, "run in local mode");
             options.addOption(localOption);
+
+            Option lockPathOption = new Option("LP", "lockPath", true, "path to pack.lock file");
+            options.addOption(lockPathOption);
+
+            Option helpOption = new Option("H", "help", false, "Help!");
+            options.addOption(helpOption);
         }
 
         return options;
-    }
-
-    private static Options createOptions() {
-        Options result = new Options();
-
-        Option appConfigPathOption = new Option("appConfigPath", "acp", true, "Path to app config app.json");
-        result.addOption(appConfigPathOption);
-
-        return result;
     }
 
     private String[] command;
@@ -54,7 +51,7 @@ public class AppOptionsImpl implements AppOptions {
     public AppOptionsImpl(String... args) {
         this.args = args;
 
-        command = new String[]{"resolve"};
+        parse();
     }
 
     public CommandLine parse() {
@@ -77,11 +74,15 @@ public class AppOptionsImpl implements AppOptions {
 
         try {
             cmd = parser.parse(options, args);
+            command = cmd.getArgs();
         } catch (ParseException e) {
-            System.out.println(e.getMessage());
             formatter.printHelp("terra", options);
-
             System.exit(1);
+        }
+
+        if (cmd.hasOption("help")) {
+            formatter.printHelp("terra", options);
+            System.exit(0);
         }
 
         return cmd;
@@ -106,9 +107,20 @@ public class AppOptionsImpl implements AppOptions {
     }
 
     @Override
+    public String getLockPathString() {
+        parse();
+        return cmd.getOptionValue("lockPath", "src/terra/pack.lock");
+    }
+
+    @Override
+    public Path getLockPath() {
+        return Paths.get(getLockPathString());
+    }
+
+    @Override
     public Path getAppConfigPath() {
         parse();
-        return Paths.get(cmd.getOptionValue("appConfigPath", "src/terra/config/app.json"));
+        return Paths.get(cmd.getOptionValue("appConfigPath", "src/terra/app.json"));
     }
 
     @Override
@@ -124,19 +136,29 @@ public class AppOptionsImpl implements AppOptions {
     }
 
     @Override
-    public Path getCachePath() {
+    public String getLocalCachePathString() {
         parse();
 
+        return cmd.getOptionValue("localCachePath", ".terra/cache");
+    }
+
+    @Override
+    public String getCachePathString() {
         if (isLocal()) {
-            return getLocalCachePath();
+            return getLocalCachePathString();
         } else {
-            return Paths.get(cmd.getOptionValue("cachePath", "~/.terra/cache"));
+            parse();
+            return cmd.getOptionValue("cachePath", "~/.terra/cache");
         }
     }
 
     @Override
+    public Path getCachePath() {
+        return Paths.get(getCachePathString().replace("~", System.getProperty("user.home")));
+    }
+
+    @Override
     public Path getLocalCachePath() {
-        parse();
-        return Paths.get(cmd.getOptionValue("localCachePath", ".terra/cache"));
+        return Paths.get(getLocalCachePathString());
     }
 }

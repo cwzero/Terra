@@ -1,5 +1,11 @@
 package com.liquidforte.terra.api.storage;
 
-public interface LockStorage {
+import java.util.Map;
 
+public interface LockStorage {
+    long getLock(long addonId);
+
+    void setLock(long addonId, long fileId);
+
+    Map<Long, Long> getLocks();
 }

@@ -5,9 +5,11 @@ import com.liquidforte.terra.api.model.File;
 import java.util.List;
 
 public interface FileCache {
-    File getFile(long fileId);
+    File getFile(long addonId, long fileId);
 
-    byte[] getFileData(long fileId);
+    byte[] getFileData(long addonId, long fileId);
 
-    List<Long> getModDependencies(long fileId);
+    void installFile(long addonId, long fileId);
+
+    List<Long> getModDependencies(long addonId, long fileId);
 }

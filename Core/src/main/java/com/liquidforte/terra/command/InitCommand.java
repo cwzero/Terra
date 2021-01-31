@@ -6,17 +6,8 @@ import com.liquidforte.terra.api.command.CommandContext;
 
 public class InitCommand extends AbstractCommand {
     @Inject
-    public InitCommand() {
-
-    }
-
     public InitCommand(CommandContext context) {
         super(context);
-    }
-
-    @Override
-    public Command getInstance(CommandContext context) {
-        return new InitCommand(context);
     }
 
     @Override

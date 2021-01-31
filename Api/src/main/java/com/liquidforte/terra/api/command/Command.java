@@ -18,6 +18,4 @@ public interface Command extends Runnable {
     default String[] getAlias() {
         return new String[0];
     }
-
-    Command getInstance(CommandContext context);
 }

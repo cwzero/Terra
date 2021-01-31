@@ -3,16 +3,14 @@ package com.liquidforte.terra.database;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.liquidforte.terra.api.database.Database;
+import com.liquidforte.terra.api.database.DatabaseServer;
 import com.liquidforte.terra.api.options.AppOptions;
-import com.liquidforte.terra.util.FileUtil;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.h2.jdbcx.JdbcDataSource;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.sql.DataSource;
-import java.io.File;
-import java.nio.file.Paths;
 
 public class H2Database implements Database {
     private final AppOptions appOptions;
@@ -25,9 +23,9 @@ public class H2Database implements Database {
 
     private String getPath() {
         if (isLocal) {
-            return FileUtil.getRelativePath(new File("."), appOptions.getLocalCachePath().toFile()) + "/" + name;
+            return appOptions.getLocalCachePathString() + "/" + name;
         } else {
-            return FileUtil.getRelativePath(Paths.get("~").toFile(), appOptions.getCachePath().toFile()) + "/" + name;
+            return appOptions.getCachePathString() + "/" + name;
         }
     }
 
@@ -63,14 +61,15 @@ public class H2Database implements Database {
 
     @Override
     public Jdbi getJdbi() {
-        return Jdbi.create(getPooledDataSource());
+        return Jdbi.create(getPooledDataSource()).installPlugins();
     }
 
     @Inject
-    public H2Database(AppOptions appOptions, @Assisted boolean inMemory, @Assisted boolean isLocal, @Assisted String name) {
+    public H2Database(DatabaseServer databaseServer, AppOptions appOptions, @Assisted("inMemory") boolean inMemory, @Assisted("isLocal") boolean isLocal, @Assisted("name") String name) {
         this.appOptions = appOptions;
         this.inMemory = inMemory;
         this.isLocal = appOptions.isLocal() || isLocal;
         this.name = name;
+        databaseServer.start();
     }
 }

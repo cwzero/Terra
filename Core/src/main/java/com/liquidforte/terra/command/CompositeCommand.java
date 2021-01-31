@@ -10,7 +10,7 @@ public class CompositeCommand extends AbstractCommand {
 
     public CompositeCommand(CommandContext context, Command[] commands) {
         super(context);
-        this.commands = Arrays.stream(commands).filter(it -> it != null).map(command -> command.getInstance(context)).toArray(Command[]::new);
+        this.commands = Arrays.stream(commands).filter(it -> it != null).toArray(Command[]::new);
     }
 
     @Override
@@ -18,10 +18,5 @@ public class CompositeCommand extends AbstractCommand {
         for (Command command : commands) {
             command.run();
         }
-    }
-
-    @Override
-    public Command getInstance(CommandContext context) {
-        return new CompositeCommand(context, commands);
     }
 }

@@ -4,6 +4,11 @@
   "packAuthors": [
     "code_wizard_zero"
   ],
-  "minecraftVersion": "1.16.5",
+  "minecraftVersion": "1.12.2",
+  "alternateVersions": [
+    "1.12.2",
+    "1.12.1",
+    "1.12"
+  ],
   "forgeVersion": "latest"
 }
