@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class AddonSearchServiceImpl implements AddonSearchService {
@@ -63,18 +64,29 @@ public class AddonSearchServiceImpl implements AddonSearchService {
         List<CurseAddonSearchResult> results = searchAddons(request);
 
         while (!results.isEmpty()) {
-            for (CurseAddonSearchResult result : results) {
-                if (result.getSlug().toLowerCase().contentEquals(slug)) {
-                    return Optional.of(result);
-                }
+            System.out.println(results.get(0).getSlug());
+
+            Stream<CurseAddonSearchResult> matches = results.stream().filter(it -> it.getSlug().contentEquals(slug));
+            Optional<CurseAddonSearchResult> r = matches.findAny();
+            if (r.isPresent()) {
+                return r;
             }
 
             request.setIndex(request.getIndex() + 1);
+            System.out.println("Scanning page " + request.getIndex());
             results = searchAddons(request);
         }
 
-        if (deep && !Strings.isNullOrEmpty(filter)) {
-            return findBySlug(mcVer, "", slug, deep);
+        if (!Strings.isNullOrEmpty(filter)) {
+            String f = "";
+
+            if (filter.length() > 1) {
+                f = filter.substring(0, filter.length() - 1);
+
+                return findBySlug(mcVer, f, slug, deep);
+            } else if (deep) {
+                return findBySlug(mcVer, "", slug, true);
+            }
         }
 
         return Optional.empty();
@@ -82,6 +94,10 @@ public class AddonSearchServiceImpl implements AddonSearchService {
 
     @Override
     public Optional<CurseAddonSearchResult> findBySlug(String mcVer, String[] altVers, String slug) {
-        return findBySlug(mcVer, altVers, slug, slug);
+        if (slug.contains("-")) {
+            return findBySlug(mcVer, altVers, slug.substring(0, slug.indexOf("-")), slug);
+        } else {
+            return findBySlug(mcVer, altVers, slug, slug);
+        }
     }
 }

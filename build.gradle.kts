@@ -34,7 +34,6 @@ allprojects {
 
 dependencies {
     implementation(project(":Core"))
-    implementation(project(":Client"))
     implementation(project(":Cache"))
     implementation(project(":CurseClient"))
     implementation(project(":Database"))
@@ -54,9 +53,20 @@ tasks.named<JavaExec>("run") {
     args = listOf("runMMCInstance")
 }
 
-tasks.register<Copy>("install") {
+tasks.register<Sync>("syncBin") {
     dependsOn("installDist")
 
-    from(file("$buildDir/install/Terra"))
-    into(file("${System.getProperty("user.home")}/.terra"))
+    from(file("$buildDir/install/Terra/bin"))
+    into(file("${System.getProperty("user.home")}/.terra/bin"))
+}
+
+tasks.register<Sync>("syncLib") {
+    dependsOn("installDist")
+
+    from(file("$buildDir/install/Terra/lib"))
+    into(file("${System.getProperty("user.home")}/.terra/lib"))
+}
+
+tasks.register("install") {
+    dependsOn("syncBin", "syncLib")
 }

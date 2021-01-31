@@ -13,7 +13,7 @@ public interface LockDao {
     @SqlQuery("SELECT FILE_ID FROM LOCK WHERE ADDON_ID = :addonId")
     long getLock(@Bind("addonId") long addonId);
 
-    @SqlUpdate("INSERT INTO LOCK(ADDON_ID, FILE_ID) VALUES (:addonId, :fileId)")
+    @SqlUpdate("MERGE INTO LOCK(ADDON_ID, FILE_ID) VALUES (:addonId, :fileId)")
     void setLock(@Bind("addonId") long addonId, @Bind("fileId") long fileId);
 
     @SqlQuery("SELECT ADDON_ID FROM LOCK")

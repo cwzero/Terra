@@ -33,6 +33,10 @@ public class AppPathsImpl implements AppPaths {
         return getMMCPath().resolve("instances").resolve(appConfigProvider.get().getPackName());
     }
 
+    public Path getMMCMCPath() {
+        return getMMCInstancePath().resolve(".minecraft");
+    }
+
     @Override
     public Path getServerPath() {
         return rootPath.resolve(appOptions.getServerPath());
@@ -111,27 +115,27 @@ public class AppPathsImpl implements AppPaths {
 
     @Override
     public Path getMMCConfigPath() {
-        return getMMCInstancePath().resolve(appOptions.getConfigPath());
+        return getMMCMCPath().resolve(appOptions.getConfigPath());
     }
 
     @Override
     public Path getMMCModsPath() {
-        return getMMCInstancePath().resolve(appOptions.getModsPath());
+        return getMMCMCPath().resolve(appOptions.getModsPath());
     }
 
     @Override
     public Path getMMCResourcesPath() {
-        return getMMCInstancePath().resolve(appOptions.getResourcesPath());
+        return getMMCMCPath().resolve(appOptions.getResourcesPath());
     }
 
     @Override
     public Path getMMCSavesPath() {
-        return getMMCInstancePath().resolve(appOptions.getSavesPath());
+        return getMMCMCPath().resolve(appOptions.getSavesPath());
     }
 
     @Override
     public Path getMMCScriptsPath() {
-        return getMMCInstancePath().resolve(appOptions.getScriptsPath());
+        return getMMCMCPath().resolve(appOptions.getScriptsPath());
     }
 
     @Override

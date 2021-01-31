@@ -11,6 +11,8 @@ import com.liquidforte.terra.util.FingerprintUtil;
 import lombok.RequiredArgsConstructor;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -36,13 +38,24 @@ public class FileCacheImpl implements FileCache {
     @Override
     public byte[] getFileData(long addonId, long fileId) {
         byte[] result = fileStorage.getData(addonId, fileId);
+        File file = getFile(addonId, fileId);
 
-        if (result.length <= 0) {
-            result = fileService.downloadFile(addonId, fileId);
-            fileStorage.setData(addonId, fileId, result);
+        if (result == null || result.length <= 0 || result.length != file.getFileLength() || file.getFingerprint() == FingerprintUtil.getByteArrayHash(result)) {
+            result = fileService.downloadFile(file);
+
+            if (result.length == file.getFileLength() && file.getFingerprint() == FingerprintUtil.getByteArrayHash(result)) {
+                fileStorage.setData(addonId, fileId, result);
+                return result;
+            } else {
+                throw new RuntimeException("Download for " + file.getFileName() + " failed.");
+            }
         }
 
-        return result;
+        if (result == null || result.length <= 0 || result.length != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getByteArrayHash(result)) {
+            throw new RuntimeException("Download for " + file.getFileName() + " failed.");
+        } else {
+            return result;
+        }
     }
 
     @Override
@@ -54,23 +67,37 @@ public class FileCacheImpl implements FileCache {
         }
 
         File file = getFile(addonId, fileId);
-        byte[] data = getFileData(addonId, fileId);
 
         Path targetPath = appPaths.getMCModsPath().resolve(file.getFileName());
-        java.io.File targetFile = targetPath.toFile();
-        java.io.File modsDir = targetFile.getParentFile();
+        Path modsPath = targetPath.getParent();
 
-        if (!modsDir.exists()) {
-            modsDir.mkdirs();
+        if (!Files.exists(modsPath)) {
+            try {
+                Files.createDirectories(modsPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         try {
-            if (!targetFile.exists() || FingerprintUtil.getFileHash(targetFile) != file.getFingerprint()) {
-                FileOutputStream fos = new FileOutputStream(targetFile);
+            if (!Files.exists(targetPath) || Files.size(targetPath) != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getFileHash(targetPath)) {
+                byte[] data = getFileData(addonId, fileId);
+
+                if (data.length != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getByteArrayHash(data)) {
+                    throw new RuntimeException("Download for " + file.getFileName() + " failed.");
+                } else {
+                    System.out.println("Successful download for " + file.getFileName());
+                }
+
+                FileOutputStream fos = new FileOutputStream(targetPath.toFile());
 
                 fos.write(data);
                 fos.flush();
                 fos.close();
+            }
+
+            if (!Files.exists(targetPath) || Files.size(targetPath) != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getFileHash(targetPath)) {
+                throw new RuntimeException("Download for " + file.getFileName() + " failed.");
             }
         } catch (Exception ex) {
             ex.printStackTrace();

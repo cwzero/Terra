@@ -2,7 +2,9 @@ package com.liquidforte.terra.database.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.name.Named;
 import com.liquidforte.terra.api.database.Database;
 import com.liquidforte.terra.api.database.DatabaseFactory;
 import com.liquidforte.terra.api.storage.FileStorage;
@@ -29,6 +31,27 @@ public class DatabaseModule extends AbstractModule {
         bind(FileStorage.class).to(FileStorageImpl.class);
         bind(LockStorage.class).to(LockStorageImpl.class);
         bind(ModStorage.class).to(ModStorageImpl.class);
+    }
+
+    @Provides
+    @Named("files")
+    @Singleton
+    public Database getFileDatabase(DatabaseFactory databaseFactory) {
+        return databaseFactory.create(false, false, "files");
+    }
+
+    @Provides
+    @Named("mods")
+    @Singleton
+    public Database getModDatabase(DatabaseFactory databaseFactory) {
+        return databaseFactory.create(false, false, "mods");
+    }
+
+    @Provides
+    @Named("lock")
+    @Singleton
+    public Database getLockDatabase(DatabaseFactory databaseFactory) {
+        return databaseFactory.create(true, true, "lock");
     }
 
     @Provides

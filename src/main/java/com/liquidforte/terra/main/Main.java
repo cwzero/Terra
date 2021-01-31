@@ -4,7 +4,6 @@ import com.google.inject.Injector;
 import com.liquidforte.terra.api.command.CommandParser;
 import com.liquidforte.terra.api.database.DatabaseServer;
 import com.liquidforte.terra.cache.inject.CacheModule;
-import com.liquidforte.terra.client.inject.TerraClientModule;
 import com.liquidforte.terra.curse.inject.CurseClientModule;
 import com.liquidforte.terra.database.inject.DatabaseModule;
 import com.liquidforte.terra.inject.AppModule;
@@ -23,8 +22,7 @@ public class Main {
                         new CoreModule(),
                         new CurseClientModule(),
                         new DatabaseModule(),
-                        new JacksonModule(),
-                        new TerraClientModule())
+                        new JacksonModule())
                 .build().createInjector();
 
         try (LifecycleManager manager = injector.getInstance(LifecycleManager.class)) {

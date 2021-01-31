@@ -13,7 +13,7 @@ public class RunServerCommand extends AbstractCommand {
 
     @Override
     protected void doRun() {
-        getCommandParser().run("generateServerFiles");
+        getCommandParser().run("generateServerFiles", "install");
 
         ExecUtil.exec(getAppPaths().getServerPath().toAbsolutePath().toFile(), "cmd /c server_runner.bat");
     }

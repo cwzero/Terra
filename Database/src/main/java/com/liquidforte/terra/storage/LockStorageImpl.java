@@ -2,8 +2,8 @@ package com.liquidforte.terra.storage;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.liquidforte.terra.api.database.Database;
-import com.liquidforte.terra.api.database.DatabaseFactory;
 import com.liquidforte.terra.api.database.ForgeDao;
 import com.liquidforte.terra.api.database.LockDao;
 import com.liquidforte.terra.api.storage.LockStorage;
@@ -16,8 +16,8 @@ public class LockStorageImpl implements LockStorage {
     private final Database lockDatabase;
 
     @Inject
-    public LockStorageImpl(DatabaseFactory databaseFactory) {
-        this.lockDatabase = databaseFactory.create(true, true, "lock");
+    public LockStorageImpl(@Named("lock") Database lockDatabase) {
+        this.lockDatabase = lockDatabase;
         lockDatabase.getJdbi().useExtension(LockDao.class, dao -> dao.createTable());
         lockDatabase.getJdbi().useExtension(ForgeDao.class, dao -> dao.createTable());
     }

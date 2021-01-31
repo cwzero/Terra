@@ -53,6 +53,7 @@ public class H2Database implements Database {
         if (pooledDataSource == null) {
             HikariConfig config = new HikariConfig();
             config.setDataSource(getDataSource());
+            config.setMaximumPoolSize(20);
 
             pooledDataSource = new HikariDataSource(config);
         }

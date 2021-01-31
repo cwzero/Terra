@@ -1,11 +1,15 @@
 package com.liquidforte.terra.storage;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.liquidforte.terra.api.cache.FileCache;
-import com.liquidforte.terra.api.database.*;
+import com.liquidforte.terra.api.database.Database;
+import com.liquidforte.terra.api.database.FileDao;
+import com.liquidforte.terra.api.database.FileDataDao;
+import com.liquidforte.terra.api.database.FileDependencyDao;
 import com.liquidforte.terra.api.model.File;
 import com.liquidforte.terra.api.storage.FileStorage;
-import com.liquidforte.terra.util.FingerprintUtil;
+import org.jdbi.v3.core.result.ResultSetException;
 
 import java.util.List;
 
@@ -14,9 +18,9 @@ public class FileStorageImpl implements FileStorage {
     private final Database fileDatabase;
 
     @Inject
-    public FileStorageImpl(DatabaseFactory databaseFactory, FileCache fileCache) {
+    public FileStorageImpl(@Named("files") Database fileDatabase, FileCache fileCache) {
         this.fileCache = fileCache;
-        fileDatabase = databaseFactory.create(false, false, "files");
+        this.fileDatabase = fileDatabase;
 
         fileDatabase.getJdbi().useExtension(FileDao.class, dao -> dao.createTable());
         fileDatabase.getJdbi().useExtension(FileDataDao.class, dao -> dao.createTable());
@@ -26,16 +30,27 @@ public class FileStorageImpl implements FileStorage {
     @Override
     public byte[] getData(long addonId, long fileId) {
         try {
-            return fileDatabase.getJdbi().withExtension(FileDataDao.class, dao -> dao.getData(fileId));
-        } catch (IllegalStateException ignored) {
-
+            byte[] result = fileDatabase.getJdbi().withExtension(FileDataDao.class, dao -> dao.getData(fileId));
+            File file = fileCache.getFile(addonId, fileId);
+            if (result.length == file.getFileLength()) {
+                return result;
+            } else {
+                fileDatabase.getJdbi().useExtension(FileDataDao.class, dao -> dao.delete(fileId));
+            }
+        } catch (ResultSetException ex) {
+            fileDatabase.getJdbi().useExtension(FileDataDao.class, dao -> dao.delete(fileId));
+        } catch (IllegalStateException ex) {
+            if (!ex.getMessage().contains("no results")) {
+                fileDatabase.getJdbi().useExtension(FileDataDao.class, dao -> dao.delete(fileId));
+            }
         }
         return new byte[0];
     }
 
     @Override
     public void setData(long addonId, long fileId, byte[] data) {
-        if (data.length > 0 && FingerprintUtil.getByteArrayHash(data) == fileCache.getFile(addonId, fileId).getFingerprint()) {
+        File file = fileCache.getFile(addonId, fileId);
+        if (data.length == file.getFileLength()) {
             fileDatabase.getJdbi().useExtension(FileDataDao.class, dao -> dao.insert(fileId, data));
         }
     }

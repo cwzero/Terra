@@ -8,7 +8,7 @@ public interface FileService {
     long getLatestFile(String mcVer, String[] altVer, long addonId);
     File getFile(long addonId, long fileId);
 
-    byte[] downloadFile(long addonId, long fileId);
+    byte[] downloadFile(File file);
 
     List<Long> getDependencies(long addonId, long fileId);
 }

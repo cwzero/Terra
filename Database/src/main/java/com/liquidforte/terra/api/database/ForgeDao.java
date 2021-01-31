@@ -11,6 +11,6 @@ public interface ForgeDao {
     @SqlQuery("SELECT FORGE_VERSION FROM FORGE WHERE MINECRAFT_VERSION = :minecraftVersion")
     String getForgeVersion(@Bind("minecraftVersion") String minecraftVersion);
 
-    @SqlUpdate("INSERT INTO FORGE (MINECRAFT_VERSION, FORGE_VERSION) VALUES (:minecraftVersion, :forgeVersion)")
+    @SqlUpdate("MERGE INTO FORGE (MINECRAFT_VERSION, FORGE_VERSION) VALUES (:minecraftVersion, :forgeVersion)")
     void insert(@Bind("minecraftVersion") String minecraftVersion, @Bind("forgeVersion") String forgeVersion);
 }

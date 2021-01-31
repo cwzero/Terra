@@ -17,7 +17,7 @@ public class ModCacheImpl implements ModCache {
     public long getAddonId(String slug) {
         long result = modStorage.getAddonId(slug);
 
-        if (result == -1) {
+        if (result <= 0) {
             result = modService.getAddonId(appConfig.getMinecraftVersion(), appConfig.getAlternateVersions().toArray(new String[0]), slug);
             modStorage.setAddonId(result, slug);
         }

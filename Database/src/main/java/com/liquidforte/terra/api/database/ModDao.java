@@ -8,7 +8,7 @@ public interface ModDao {
     @SqlUpdate("CREATE TABLE IF NOT EXISTS ADDON(ADDON_ID BIGINT PRIMARY KEY, SLUG VARCHAR NOT NULL UNIQUE)")
     void createTable();
 
-    @SqlUpdate("INSERT INTO ADDON(ADDON_ID, SLUG) VALUES (:addonId, :slug)")
+    @SqlUpdate("MERGE INTO ADDON(ADDON_ID, SLUG) VALUES (:addonId, :slug)")
     void insert(@Bind("addonId") long addonId, @Bind("slug") String slug);
 
     @SqlQuery("SELECT ADDON_ID FROM ADDON WHERE SLUG = :slug")

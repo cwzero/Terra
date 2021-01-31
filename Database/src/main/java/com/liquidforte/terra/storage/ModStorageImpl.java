@@ -1,6 +1,7 @@
 package com.liquidforte.terra.storage;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.liquidforte.terra.api.database.Database;
 import com.liquidforte.terra.api.database.DatabaseFactory;
 import com.liquidforte.terra.api.database.ModDao;
@@ -11,8 +12,8 @@ public class ModStorageImpl implements ModStorage {
     private final Database modDatabase;
 
     @Inject
-    public ModStorageImpl(DatabaseFactory databaseFactory) {
-        modDatabase = databaseFactory.create(false, false, "mods");
+    public ModStorageImpl(@Named("mods") Database modDatabase) {
+        this.modDatabase = modDatabase;
         modDatabase.getJdbi().useExtension(ModDao.class, dao -> dao.createTable());
     }
 

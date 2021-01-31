@@ -132,6 +132,7 @@ public class LockCacheImpl implements LockCache {
                 e.printStackTrace();
             }
         }
+        LOG.info("Loaded lock cache");
     }
 
     @Override
@@ -165,6 +166,7 @@ public class LockCacheImpl implements LockCache {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        LOG.info("Saved lock cache");
     }
 
     @Override

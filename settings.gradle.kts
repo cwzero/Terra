@@ -1,3 +1,3 @@
-include("Api", "Cache", "Client", "CurseClient", "Core", "Database")
+include("Api", "Cache", "CurseClient", "Core", "Database")
 
 rootProject.name = "Terra"

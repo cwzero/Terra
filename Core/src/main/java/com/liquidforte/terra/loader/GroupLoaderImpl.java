@@ -39,7 +39,10 @@ public class GroupLoaderImpl implements com.liquidforte.terra.api.loader.GroupLo
                     String id = FileUtil.getRelativePath(groupsDir, groupFile).replace("\\", "/").replace("/", ".");
                     group.setId(id);
                 }
-                result.add(group);
+
+                if (group.isEnabled()) {
+                    result.add(group);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
