@@ -18,6 +18,8 @@ public class CommandModule extends AbstractModule {
         Multibinder<Command> commandBinder = Multibinder.newSetBinder(binder(), Command.class);
         commandBinder.addBinding().to(ResolveCommand.class);
         commandBinder.addBinding().to(DownloadCommand.class);
+        commandBinder.addBinding().to(InitCommand.class);
         commandBinder.addBinding().to(InstallCommand.class);
+        commandBinder.addBinding().to(UpdateCommand.class);
     }
 }

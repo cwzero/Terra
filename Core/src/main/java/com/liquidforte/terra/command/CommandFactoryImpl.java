@@ -18,7 +18,7 @@ public class CommandFactoryImpl implements CommandFactory {
 
     @Override
     public Command createCommand(CommandContext context) {
-        return createCommand(context, context.getOptions().getCommand());
+        return createCommand(context, context.getAppOptions().getCommand());
     }
 
     @Override

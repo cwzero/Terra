@@ -5,7 +5,6 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.util.List;
-import java.util.Map;
 
 public interface FileDependencyDao {
     @SqlUpdate("CREATE TABLE IF NOT EXISTS FILE_DEPENDENCY(SOURCE_ADDON_ID BIGINT, SOURCE_FILE_ID BIGINT, ADDON_ID BIGINT, PRIMARY KEY (SOURCE_ADDON_ID, ADDON_ID))")

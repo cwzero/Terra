@@ -3,11 +3,11 @@ package com.liquidforte.terra.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.liquidforte.terra.model.ModSpec;
+import com.liquidforte.terra.model.ModSpecImpl;
 
 import java.io.IOException;
 
-public class ModSpecSerializer extends StdSerializer<ModSpec> {
+public class ModSpecSerializer extends StdSerializer<ModSpecImpl> {
     private static final long serialVersionUID = 1L;
 
     public ModSpecSerializer() {
@@ -19,7 +19,7 @@ public class ModSpecSerializer extends StdSerializer<ModSpec> {
     }
 
     @Override
-    public void serialize(ModSpec value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(ModSpecImpl value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeString(value.getSlug());
     }
 }

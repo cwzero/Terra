@@ -59,6 +59,10 @@ public class LockCacheImpl implements LockCache {
             lockStorage.setLock(addonId, result);
         }
 
+        fileService.getDependencies(addonId, result).forEach(dep -> {
+            update(dep);
+        });
+
         return result;
     }
 

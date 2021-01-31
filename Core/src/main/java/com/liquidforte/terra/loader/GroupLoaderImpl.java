@@ -3,8 +3,9 @@ package com.liquidforte.terra.loader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
+import com.liquidforte.terra.api.model.Group;
 import com.liquidforte.terra.api.options.AppOptions;
-import com.liquidforte.terra.model.Group;
+import com.liquidforte.terra.model.GroupImpl;
 import com.liquidforte.terra.util.FileUtil;
 import org.apache.commons.io.FileUtils;
 
@@ -13,16 +14,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupLoader {
+public class GroupLoaderImpl implements com.liquidforte.terra.api.loader.GroupLoader {
     private ObjectMapper mapper;
     private AppOptions options;
 
     @Inject
-    public GroupLoader(ObjectMapper mapper, AppOptions options) {
+    public GroupLoaderImpl(ObjectMapper mapper, AppOptions options) {
         this.mapper = mapper;
         this.options = options;
     }
 
+    @Override
     public List<Group> loadGroups() {
         List<Group> result = new ArrayList<>();
 
@@ -32,7 +34,7 @@ public class GroupLoader {
 
         for (File groupFile : FileUtils.listFiles(groupsDir, extensions, true)) {
             try {
-                Group group = mapper.readValue(groupFile, Group.class);
+                GroupImpl group = mapper.readValue(groupFile, GroupImpl.class);
                 if (Strings.isNullOrEmpty(group.getId())) {
                     String id = FileUtil.getRelativePath(groupsDir, groupFile).replace("\\", "/").replace("/", ".");
                     group.setId(id);

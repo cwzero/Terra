@@ -5,9 +5,9 @@ import com.liquidforte.terra.api.command.CommandContext;
 import com.liquidforte.terra.api.model.Group;
 import com.liquidforte.terra.api.model.ModSpec;
 
-public class InstallCommand extends AbstractCommand {
+public class UpdateCommand extends AbstractCommand {
     @Inject
-    public InstallCommand(CommandContext context) {
+    public UpdateCommand(CommandContext context) {
         super(context);
     }
 
@@ -15,12 +15,7 @@ public class InstallCommand extends AbstractCommand {
     public void run() {
         for (Group group : getGroupLoader().loadGroups()) {
             for (ModSpec spec : group.getMods()) {
-                String slug = spec.getSlug();
-
-                long addonId = getModCache().getAddonId(slug);
-                long fileId = getLockCache().getLock(addonId);
-
-                getFileCache().installFile(addonId, fileId);
+                getLockCache().update(spec.getSlug());
             }
         }
     }
