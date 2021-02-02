@@ -7,13 +7,13 @@ import com.liquidforte.terra.command.LockCommand;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class GenerateServerFilesCommand extends LockCommand {
     @Inject
     public GenerateServerFilesCommand(CommandContext context) {
         super(context);
+        setDependencies("installForge");
     }
 
     private String setJavaVersion() {
@@ -60,8 +60,6 @@ public class GenerateServerFilesCommand extends LockCommand {
 
     @Override
     protected void doRun() {
-        getCommandParser().run("installForge");
-
         // TODO: OS Dependent
         generateServerBat();
         generateServerRunnerBat();

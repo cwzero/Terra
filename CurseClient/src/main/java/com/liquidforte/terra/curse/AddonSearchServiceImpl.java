@@ -1,6 +1,5 @@
 package com.liquidforte.terra.curse;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.liquidforte.terra.api.curse.AddonSearchAPI;
 import com.liquidforte.terra.api.curse.AddonSearchService;
@@ -8,6 +7,9 @@ import com.liquidforte.terra.curse.model.CurseAddonSearchRequest;
 import com.liquidforte.terra.curse.model.CurseAddonSearchResult;
 import lombok.RequiredArgsConstructor;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -27,45 +29,57 @@ public class AddonSearchServiceImpl implements AddonSearchService {
     }
 
     public Optional<CurseAddonSearchResult> findBySlug(String mcVer, String[] altVers, String filter, String slug) {
-        Optional<CurseAddonSearchResult> res = findBySlug(mcVer, filter, slug, false);
+        Optional<CurseAddonSearchResult> res = Optional.empty();
 
-        if (res.isEmpty()) {
-            for (String v : altVers) {
-                res = findBySlug(v, filter, slug, false);
+        if (res.isPresent()) {
+            return res;
+        }
 
-                if (res.isPresent()) {
-                    return res;
-                }
+        for (String v : altVers) {
+            res = findBySlug(v, filter, slug);
+
+            if (res.isPresent()) {
+                return res;
             }
         }
 
-        if (res.isEmpty()) {
-            res = findBySlug(mcVer, slug, slug, true);
+        res = findBySlug(mcVer, filter, slug);
+
+        if (res.isPresent()) {
+            return res;
         }
 
-        if (res.isEmpty()) {
-            for (String v : altVers) {
-                res = findBySlug(v, filter, slug, true);
+        if (filter.contains("-")) {
+            res = findBySlug(mcVer, altVers, filter.replace("-", "+"), slug);
 
-                if (res.isPresent()) {
-                    return res;
-                }
+            if (res.isPresent()) {
+                return res;
             }
         }
 
-        return res;
+        return Optional.empty();
+        /*
+
+        if (filter.length() > 3) {
+            String f = filter.substring(0, filter.length() - 1);
+
+            return findBySlug(mcVer, altVers, f, slug);
+        }
+
+        return findBySlug(mcVer, altVers, "", slug);
+         */
     }
 
-    public Optional<CurseAddonSearchResult> findBySlug(String mcVer, String filter, String slug, boolean deep) {
+    public Optional<CurseAddonSearchResult> findBySlug(String mcVer, String filter, String slug) {
         CurseAddonSearchRequest request = new CurseAddonSearchRequest();
         request.setSearchFilter(filter);
         request.setGameVersion(mcVer);
 
         List<CurseAddonSearchResult> results = searchAddons(request);
+        System.out.println("Searching: " + filter + " version: " + mcVer);
+        System.out.println("Scanning page: " + request.getIndex());
 
         while (!results.isEmpty()) {
-            System.out.println(results.get(0).getSlug());
-
             Stream<CurseAddonSearchResult> matches = results.stream().filter(it -> it.getSlug().contentEquals(slug));
             Optional<CurseAddonSearchResult> r = matches.findAny();
             if (r.isPresent()) {
@@ -73,19 +87,21 @@ public class AddonSearchServiceImpl implements AddonSearchService {
             }
 
             request.setIndex(request.getIndex() + 1);
+            System.out.print("\033[1A");
             System.out.println("Scanning page " + request.getIndex());
             results = searchAddons(request);
         }
 
-        if (!Strings.isNullOrEmpty(filter)) {
-            String f = "";
 
-            if (filter.length() > 1) {
-                f = filter.substring(0, filter.length() - 1);
-
-                return findBySlug(mcVer, f, slug, deep);
-            } else if (deep) {
-                return findBySlug(mcVer, "", slug, true);
+        if (filter.contains("+")) {
+            String[] f = filter.split("\\+");
+            for (String fi : f) {
+                if (fi.length() >= 3) {
+                    Optional<CurseAddonSearchResult> res = findBySlug(mcVer, fi, slug);
+                    if (res.isPresent()) {
+                        return res;
+                    }
+                }
             }
         }
 
@@ -94,10 +110,7 @@ public class AddonSearchServiceImpl implements AddonSearchService {
 
     @Override
     public Optional<CurseAddonSearchResult> findBySlug(String mcVer, String[] altVers, String slug) {
-        if (slug.contains("-")) {
-            return findBySlug(mcVer, altVers, slug.substring(0, slug.indexOf("-")), slug);
-        } else {
-            return findBySlug(mcVer, altVers, slug, slug);
-        }
+        System.out.println("Searching for addon id for slug: " + slug);
+        return findBySlug(mcVer, altVers, slug, slug);
     }
 }

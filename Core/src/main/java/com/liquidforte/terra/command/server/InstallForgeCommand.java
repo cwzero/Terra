@@ -11,11 +11,12 @@ public class InstallForgeCommand extends LockCommand {
     @Inject
     public InstallForgeCommand(CommandContext context) {
         super(context);
+        setDependencies("installJava");
     }
 
     @Override
     protected void doRun() {
-        getCommandParser().run("installJava");
+        setDependencies("installJava");
 
         String minecraftVersion = getAppConfig().getMinecraftVersion();
         String forgeVersion = getLockCache().getForgeLock();

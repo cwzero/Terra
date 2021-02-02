@@ -13,12 +13,11 @@ public class InstallMMCCommand extends AbstractCommand {
     @Inject
     public InstallMMCCommand(CommandContext context) {
         super(context);
+        setDependencies("linkMMC", "generateMMCFiles");
     }
 
     @Override
     public void doRun() {
-        getCommandParser().run("linkMMC", "generateMMCFiles");
-
         Path mmcExe = getAppPaths().getMMCPath().resolve("MultiMC.exe");
 
         if (!Files.exists(mmcExe)) {

@@ -1,5 +1,6 @@
 package com.liquidforte.terra.command.impl;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandContext;
@@ -30,7 +31,7 @@ public class CommandFactoryImpl implements CommandFactory {
 
     @Override
     public Command createCommand(CommandContext context, String[] command) {
-        if (command.length <= 0) {
+        if (command.length <= 0 || Arrays.stream(command).allMatch(Strings::isNullOrEmpty)) {
             return null;
         }
 
@@ -49,6 +50,10 @@ public class CommandFactoryImpl implements CommandFactory {
 
     @Override
     public Command createCommand(CommandContext context, String command) {
+        if (Strings.isNullOrEmpty(command)) {
+            return null;
+        }
+
         for (Command co : commands) {
             if (co.getCommand().contentEquals(command) || Arrays.stream(co.getAlias()).anyMatch(c -> c.contentEquals(command))) {
                 return co;

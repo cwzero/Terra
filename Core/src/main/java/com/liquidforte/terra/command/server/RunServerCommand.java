@@ -9,12 +9,11 @@ public class RunServerCommand extends AbstractCommand {
     @Inject
     public RunServerCommand(CommandContext context) {
         super(context);
+        setDependencies("generateServerFiles", "install");
     }
 
     @Override
     protected void doRun() {
-        getCommandParser().run("generateServerFiles", "install");
-
         ExecUtil.exec(getAppPaths().getServerPath().toAbsolutePath().toFile(), "cmd /c server_runner.bat");
     }
 }

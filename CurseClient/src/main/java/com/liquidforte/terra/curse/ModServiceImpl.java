@@ -6,7 +6,11 @@ import com.liquidforte.terra.api.service.ModService;
 import com.liquidforte.terra.curse.model.CurseAddonSearchResult;
 import lombok.RequiredArgsConstructor;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Optional;
+import java.util.Scanner;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class ModServiceImpl implements ModService {
@@ -16,7 +20,20 @@ public class ModServiceImpl implements ModService {
     public long getAddonId(String mcVer, String[] altVers, String slug) {
         Optional<CurseAddonSearchResult> result = addonSearchService.findBySlug(mcVer, altVers, slug);
         if (result.isEmpty()) {
-            throw new RuntimeException("Failed to find mod by slug: " + slug);
+            try {
+                FileOutputStream fos = new FileOutputStream("manual.txt");
+                PrintStream ps = new PrintStream(fos);
+                ps.println(slug);
+                ps.close();
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("Failed to find mod by slug: " + slug);
+            System.out.print("Enter id: ");
+            Scanner in = new Scanner(System.in);
+            return Long.parseLong(in.nextLine());
         } else {
             return result.get().getId();
         }

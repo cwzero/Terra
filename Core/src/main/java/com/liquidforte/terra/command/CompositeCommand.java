@@ -4,18 +4,29 @@ import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandContext;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class CompositeCommand extends AbstractCommand {
     private final Command[] commands;
 
     public CompositeCommand(CommandContext context, Command[] commands) {
         super(context);
-        this.commands = Arrays.stream(commands).filter(it -> it != null).toArray(Command[]::new);
+        this.commands = Arrays.stream(commands).filter(Objects::nonNull).toArray(Command[]::new);
+    }
+
+    @Override
+    public boolean needsDatabase() {
+        return super.needsDatabase() || Arrays.stream(commands).anyMatch(Command::needsDatabase);
+    }
+
+    @Override
+    public boolean needsLockCache() {
+        return super.needsLockCache() || Arrays.stream(commands).anyMatch(Command::needsLockCache);
     }
 
     @Override
     protected void before() {
-
+        super.before();
     }
 
     @Override

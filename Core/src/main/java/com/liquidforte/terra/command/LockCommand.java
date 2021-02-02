@@ -8,16 +8,7 @@ public abstract class LockCommand extends AbstractCommand {
     }
 
     @Override
-    protected void before() {
-        super.before();
-        getLockCache().load();
+    public boolean needsLockCache() {
+        return true;
     }
-
-    @Override
-    protected void after() {
-        getLockCache().save();
-        super.after();
-    }
-
-    protected abstract void doRun();
 }

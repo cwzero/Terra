@@ -9,12 +9,11 @@ public class RunMMCCommand extends AbstractCommand {
     @Inject
     public RunMMCCommand(CommandContext context) {
         super(context);
+        setDependencies("installMMC", "install");
     }
 
     @Override
     public void doRun() {
-        getCommandParser().run("installMMC", "install");
-
         ExecUtil.exec(getAppPaths().getMMCPath().toFile(), "cmd /c start MultiMC.exe");
     }
 }

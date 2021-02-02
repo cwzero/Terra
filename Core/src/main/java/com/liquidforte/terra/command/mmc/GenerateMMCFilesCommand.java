@@ -24,6 +24,7 @@ public class GenerateMMCFilesCommand extends AbstractCommand {
     public GenerateMMCFilesCommand(CommandContext context, ObjectMapper mapper) {
         super(context);
         this.mapper = mapper;
+        setDependencies("installJava");
     }
 
     private void generateInstanceCfg() {
@@ -80,7 +81,6 @@ public class GenerateMMCFilesCommand extends AbstractCommand {
 
     @Override
     public void doRun() {
-        getCommandParser().run("installJava");
 
         generateMultimcCfg();
         generateInstanceCfg();

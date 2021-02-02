@@ -21,6 +21,9 @@ import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HttpContext;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
@@ -78,6 +81,24 @@ public class FileServiceImpl implements FileService {
                             boolean result = super.isRedirected(request, response, context);
                             int responseCode = response.getStatusLine().getStatusCode();
                             return result || (responseCode >= 300 && responseCode < 400);
+                        }
+
+                        @Override
+                        public URI getLocationURI(HttpRequest request, HttpResponse response, HttpContext context) throws ProtocolException {
+                            URI result = super.getLocationURI(request, response, context);
+
+                            if (result.toString().contains("+") || result.toString().contains(" ")) {
+                                try {
+                                    return new URL(result.toURL().toExternalForm()
+                                            .replace("+", "%2B")
+                                            .replace(" ", "%20")
+                                    ).toURI();
+                                } catch (MalformedURLException | URISyntaxException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            return result;
                         }
                     })
                     .build();
