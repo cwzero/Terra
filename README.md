@@ -1,8 +1,15 @@
 # Terra
 
 Project Terra is a build tool for minecraft modpacks.
+
+It is currently in what I guess would be considered an Alpha state?
+
 The goal of this is to allow users to create a modpack using minecraft forge, and to store the mod information and configs in git.
 The mods themselves are specified using a json format, where you create json files in src/terra/groups.
+
+Why should I use this tool?
+- I think it should work well for pretty much any modpack developer, especially ones who are familiar with git or already using git.  It's designed to provide a superior 
+experience to using the CurseForge client or similar software to develop modpacks, presuming one is somewhat comfortable using a (hopefully) simple command-line tool.  The workflow should hopefully be relatively accessible even if you use only one or two of the commands available.
 
 Uses https://twitchappapi.docs.apiary.io/ to get mod info.
 
@@ -31,7 +38,7 @@ It is currently windows-only.  If there's anybody interested who's running mac/l
 
 It can be installed by running the command ```./gradlew install``` from the source directory.  Add ```%Home%/.terra/bin``` to your ```%PATH%``` to enable.
 
-running the command ```terra help``` will list the available commands.
+running the command ```terra help``` will list the available commands.  You can run multiple commands in one go, example: ```terra cleanMods update install```
 
 TODO: add descriptions to help command
 
@@ -41,6 +48,10 @@ A typical initial workflow would be:
 1. add mods by creating groups in src/terra/groups
 1. run multimc by running ```terra runMMCInstance```
 1. test it out/edit configs, etc
+
+Example tasks:
+If you need to add mods: ```terra install```
+If you need to update your mods: ```terra cleanMods update install```
 
 You can also run a local server by running ```terra runServer```, or build a server dist zip by running ```terra buildServer```
 
