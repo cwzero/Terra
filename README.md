@@ -43,3 +43,5 @@ You can also run a local server by running ```terra runServer```, or build a ser
 Any constructive criticism/feedback is welcome.
 I could use some help with documentation and testing.
 Need to determine what permissions, etc are required for the symbolic linking steps
+I plan to add exporters for the CurseForge client and MultiMC. The pack.lock file is practically a curse manifest already, so this should be quite easy.
+The README is a mess, and the rest is entirely undocumented beyond the ```terra help``` command.
