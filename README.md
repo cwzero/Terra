@@ -4,6 +4,10 @@ Project Terra is a build tool for minecraft modpacks.
 The goal of this is to allow users to create a modpack using minecraft forge, and to store the mod information and configs in git.
 The mods themselves are specified using a json format, where you create json files in src/terra/groups.
 
+Uses https://twitchappapi.docs.apiary.io/ to get mod info.
+
+Everything is cached to an h2 database in ~/.terra, including the mod jars themselves.  This tool is designed or at least intented to work well with huge modpacks, especially ones which might have to make small or large changes to their mod list on the fly.
+
 There is a lock file in src/terra/pack.lock - this allows the actual tested versions of the mods to be stored in
 the git repo.  Without running the ```terra update``` command, the same version of the mods will be used each time.
 
