@@ -13,6 +13,7 @@ experience to using the CurseForge client or similar software to develop modpack
 The specific advantages over using something like a curseforge manifest in git:
     - json format with slugs, so the modlist is human readable
     - caching which works with git branch-switching if you run the right commands ```terra cleanMods install``` for example
+    - Similar commands allow you to enable/disable groups of mods on the fly
     - synching of configs with MultiMC and a local server, so you can for example run commands on the server which modify configs, and it will show up in git
         (One of my packs I remember losing a lot of /projecte setEMCs when I ran them on the server and forgot to copy the config to the git repo)
 
