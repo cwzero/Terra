@@ -33,6 +33,8 @@ The groups are relatively simple, an example:
 }
 ```
 
+There's a pack config in src/terra/app.json which determines the minecraft/forge version.
+
 The contents of the mods array is using curseforge slugs, which are used with the curseforge API. To determine the
 slug for a mod, search it at https://www.curseforge.com/minecraft/mc-mods, and use the slug from the page for example
 https://www.curseforge.com/minecraft/mc-mods/{slug}
