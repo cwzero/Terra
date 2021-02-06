@@ -71,4 +71,9 @@ public class GenerateServerFilesCommand extends LockCommand {
         generateServerRunnerBat();
         generateEula();
     }
+
+    @Override
+    public String getDescription() {
+        return "Generate files for the local server";
+    }
 }

@@ -34,4 +34,9 @@ public class InstallMMCCommand extends AbstractCommand {
             }
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Install MultiMC";
+    }
 }

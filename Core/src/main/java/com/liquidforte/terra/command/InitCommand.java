@@ -92,4 +92,9 @@ public class InitCommand extends AbstractCommand {
             mcPath.resolve(dir).toFile().mkdirs();
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Generate a new project";
+    }
 }

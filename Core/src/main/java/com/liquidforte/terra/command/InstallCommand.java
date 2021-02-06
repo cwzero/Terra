@@ -28,4 +28,9 @@ public class InstallCommand extends LockCommand {
             }
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Installs mods into src/minecraft/mods";
+    }
 }

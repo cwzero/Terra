@@ -58,4 +58,9 @@ public class BuildServerCommand extends AbstractCommand {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Builds a server zip";
+    }
 }

@@ -46,4 +46,9 @@ public class CompositeCommand extends AbstractCommand {
     public boolean isEmpty() {
         return commands.length <= 0 || Arrays.stream(commands).allMatch(it -> it.isEmpty());
     }
+
+    @Override
+    public String getDescription() {
+        return "Error - composite command description should not be displayed!";
+    }
 }

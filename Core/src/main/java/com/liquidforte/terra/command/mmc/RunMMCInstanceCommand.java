@@ -21,6 +21,11 @@ public class RunMMCInstanceCommand extends AbstractCommand {
 
     @Override
     public void doRun() {
-        ExecUtil.exec(getAppPaths().getMMCPath().toFile(), "cmd /c start MultiMC.exe --launch " + getAppConfig().getPackName());
+        ExecUtil.exec(getAppPaths().getMMCPath().toFile(), "cmd /c start .\\MultiMC.exe --launch " + getAppConfig().getPackName());
+    }
+
+    @Override
+    public String getDescription() {
+        return "Run the MultiMC Instance";
     }
 }

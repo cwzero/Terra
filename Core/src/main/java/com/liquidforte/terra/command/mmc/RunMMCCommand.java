@@ -21,6 +21,11 @@ public class RunMMCCommand extends AbstractCommand {
 
     @Override
     public void doRun() {
-        ExecUtil.exec(getAppPaths().getMMCPath().toFile(), "cmd /c start MultiMC.exe");
+        ExecUtil.exec(getAppPaths().getMMCPath().toFile(), "cmd /c start .\\MultiMC.exe");
+    }
+
+    @Override
+    public String getDescription() {
+        return "Run MultiMC, this doesn't open the instance itself, just the ~/.terra multimc";
     }
 }

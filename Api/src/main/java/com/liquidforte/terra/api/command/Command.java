@@ -26,4 +26,6 @@ public interface Command extends Runnable {
     default boolean needsLockCache() { return false; }
 
     default boolean isEmpty() { return false; }
+
+    String getDescription();
 }

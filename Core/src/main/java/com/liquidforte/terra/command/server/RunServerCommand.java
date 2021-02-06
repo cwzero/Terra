@@ -24,4 +24,9 @@ public class RunServerCommand extends AbstractCommand {
     protected void doRun() {
         ExecUtil.exec(getAppPaths().getServerPath().toAbsolutePath().toFile(), "cmd /c server_runner.bat");
     }
+
+    @Override
+    public String getDescription() {
+        return "Run local server";
+    }
 }

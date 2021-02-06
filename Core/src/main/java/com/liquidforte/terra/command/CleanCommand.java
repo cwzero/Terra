@@ -14,4 +14,9 @@ public class CleanCommand extends AbstractCommand {
     protected void doRun() {
         FileUtil.rmDir(getAppPaths().getBuildPath());
     }
+
+    @Override
+    public String getDescription() {
+        return "Clean the output from 'buildServer'";
+    }
 }

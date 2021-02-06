@@ -26,4 +26,9 @@ public class InstallJavaCommand extends AbstractCommand {
             JavaUtil.installJava(getAppPaths().getJavaPath());
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Installs a jre into ~/.terra";
+    }
 }

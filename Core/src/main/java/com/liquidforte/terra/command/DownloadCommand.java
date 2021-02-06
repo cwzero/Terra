@@ -30,4 +30,9 @@ public class DownloadCommand extends LockCommand {
             }
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Download mods for enabled groups into the cache database";
+    }
 }

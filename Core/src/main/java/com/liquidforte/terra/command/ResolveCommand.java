@@ -27,4 +27,9 @@ public class ResolveCommand extends LockCommand {
             }
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Resolve the mods, download info from the CurseForge API into the local cache";
+    }
 }

@@ -113,4 +113,9 @@ public class GenerateMMCFilesCommand extends AbstractCommand {
         private String uid = "";
         private String version = "";
     }
+
+    @Override
+    public String getDescription() {
+        return "Generate the files used to run mmc and its instance";
+    }
 }

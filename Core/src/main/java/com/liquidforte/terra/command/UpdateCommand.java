@@ -21,4 +21,9 @@ public class UpdateCommand extends LockCommand {
             }
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Update versions for the enabled groups";
+    }
 }

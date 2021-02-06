@@ -64,4 +64,9 @@ public class LinkMMCCommand extends AbstractCommand {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Link the directories for the MMC instance";
+    }
 }

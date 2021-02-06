@@ -31,4 +31,9 @@ public class InstallForgeCommand extends LockCommand {
 
         ForgeUtil.installForge(serverPath, minecraftVersion, forgeVersion);
     }
+
+    @Override
+    public String getDescription() {
+        return "Install Minecraft Forge for the Local Server";
+    }
 }

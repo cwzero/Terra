@@ -21,4 +21,9 @@ public class CleanModsCommand extends AbstractCommand {
     protected void doRun() {
         FileUtil.rmFiles(getAppPaths().getMCModsPath());
     }
+
+    @Override
+    public String getDescription() {
+        return "Delete downloaded mods from src/minecraft/mods, if mods update this prevents you from having two copies of the same mod";
+    }
 }

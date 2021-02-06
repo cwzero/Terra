@@ -56,4 +56,9 @@ public class LinkServerCommand extends AbstractCommand {
             }
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "Create Symbolic links for the directories for the local server";
+    }
 }

@@ -15,4 +15,9 @@ public class LinkCommand extends AbstractCommand {
     public void doRun() {
 
     }
+
+    @Override
+    public String getDescription() {
+        return "Runs linkMMC and linkServer, creating symbolic links for multimc instance and local server";
+    }
 }

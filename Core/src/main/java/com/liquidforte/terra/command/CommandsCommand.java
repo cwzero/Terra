@@ -21,7 +21,15 @@ public class CommandsCommand extends AbstractCommand {
     }
 
     @Override
+    public String getDescription() {
+        return "List available commands";
+    }
+
+    @Override
     public void doRun() {
-        commands.stream().map(it -> it.getCommand()).forEach(System.out::println);
+        commands.stream().forEach(command -> {
+            System.out.println("-" + command.getCommand() + ": ");
+            System.out.println("\t" + command.getDescription());
+        });
     }
 }
