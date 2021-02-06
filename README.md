@@ -23,7 +23,7 @@ https://www.curseforge.com/minecraft/mc-mods/{slug}
 
 TODO: is there a better way to check slugs?
 
-It is currently windows-only.
+It is currently windows-only.  If there's anybody interested who's running mac/linux who wants to help me fix it for those systems, I don't expect it to be difficult.
 
 It can be installed by running the command ```./gradlew install``` from the source directory.  Add ```%Home%/.terra/bin``` to your ```%PATH%``` to enable.
 
@@ -40,5 +40,6 @@ A typical initial workflow would be:
 
 You can also run a local server by running ```terra runServer```, or build a server dist zip by running ```terra buildServer```
 
+Any constructive criticism/feedback is welcome.
 I could use some help with documentation and testing.
 Need to determine what permissions, etc are required for the symbolic linking steps
