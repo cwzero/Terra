@@ -2,7 +2,7 @@
 
 Project Terra is a build tool for minecraft modpacks.
 
-It is currently in what I guess would be considered an Alpha state?
+Currently in early Alpha.
 
 The goal of this is to allow users to create a modpack using minecraft forge, and to store the mod information and configs in git.
 The mods themselves are specified using a json format, where you create json files in src/terra/groups.
