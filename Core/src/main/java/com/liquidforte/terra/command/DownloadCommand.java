@@ -23,7 +23,6 @@ public class DownloadCommand extends LockCommand {
             LOG.info("Found group: " + group.getId());
             for (ModSpec spec : group.getMods()) {
                 String slug = spec.getSlug();
-                LOG.info("Resolving: " + slug);
                 long addonId = getModCache().getAddonId(slug);
                 long fileId = getLockCache().getLock(addonId);
 

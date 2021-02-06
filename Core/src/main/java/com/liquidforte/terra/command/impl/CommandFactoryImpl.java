@@ -55,7 +55,7 @@ public class CommandFactoryImpl implements CommandFactory {
         }
 
         for (Command co : commands) {
-            if (co.getCommand().contentEquals(command) || Arrays.stream(co.getAlias()).anyMatch(c -> c.contentEquals(command))) {
+            if (co.getCommand().contentEquals(command) || co.getAlias().stream().anyMatch(c -> c.contentEquals(command))) {
                 return co;
             }
         }

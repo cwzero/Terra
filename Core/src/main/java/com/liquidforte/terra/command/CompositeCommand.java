@@ -2,6 +2,7 @@ package com.liquidforte.terra.command;
 
 import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandContext;
+import com.liquidforte.terra.command.impl.CommandComparatorImpl;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -31,8 +32,18 @@ public class CompositeCommand extends AbstractCommand {
 
     @Override
     public void doRun() {
+        Arrays.sort(commands, new CommandComparatorImpl());
         for (Command command : commands) {
             command.run();
         }
+    }
+
+    public Command[] getCommands() {
+        return commands;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return commands.length <= 0 || Arrays.stream(commands).allMatch(it -> it.isEmpty());
     }
 }

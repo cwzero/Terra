@@ -13,6 +13,7 @@ dependencies {
 
     api("commons-cli:commons-cli:1.4")
     implementation("commons-codec:commons-codec:1.15")
+    implementation("org.apache.commons:commons-compress:1.20")
     api("commons-io:commons-io:2.8.0")
     //api("org.apache.commons:commons-jexl3:3.1")
 }

@@ -8,11 +8,17 @@ import com.liquidforte.terra.util.LinkUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Set;
 
 public class LinkServerCommand extends AbstractCommand {
     @Inject
     public LinkServerCommand(CommandContext context) {
         super(context);
+    }
+
+    @Override
+    public Set<String> getAlias() {
+        return Set.of("link-server");
     }
 
     @Override

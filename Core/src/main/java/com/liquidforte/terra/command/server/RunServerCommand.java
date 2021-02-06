@@ -5,11 +5,19 @@ import com.liquidforte.terra.api.command.CommandContext;
 import com.liquidforte.terra.command.AbstractCommand;
 import com.liquidforte.terra.util.ExecUtil;
 
+import java.util.Set;
+
 public class RunServerCommand extends AbstractCommand {
     @Inject
     public RunServerCommand(CommandContext context) {
         super(context);
         setDependencies("generateServerFiles", "install");
+    }
+
+
+    @Override
+    public Set<String> getAlias() {
+        return Set.of("run-server");
     }
 
     @Override

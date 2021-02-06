@@ -28,7 +28,8 @@ public class AppOptionsImpl implements AppOptions {
                 new Option("RP", "resourcesPath", true, "Resources Path"),
                 new Option("SP", "savesPath", true, "Saves Path"),
                 new Option("SCP", "scriptsPath", true, "Scripts Path"),
-                new Option("SEP", "serverPath", true, "Server Path")
+                new Option("SEP", "serverPath", true, "Server Path"),
+                new Option("BP", "buildPath", true, "Build Path")
         };
     }
 
@@ -121,6 +122,11 @@ public class AppOptionsImpl implements AppOptions {
     @Override
     public String getSrcPath() {
         return cmd.getOptionValue("srcPath", "src");
+    }
+
+    @Override
+    public String getBuildPath() {
+        return cmd.getOptionValue("buildPath", "build");
     }
 
     @Override

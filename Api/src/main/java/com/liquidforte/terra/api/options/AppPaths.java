@@ -7,6 +7,10 @@ public interface AppPaths {
 
     Path getMMCInstancePath();
 
+    Path getBuildPath();
+
+    Path getServerBuildPath();
+
     Path getSrcPath();
 
     Path getMCPath();

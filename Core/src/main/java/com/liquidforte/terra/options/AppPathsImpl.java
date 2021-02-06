@@ -19,6 +19,16 @@ public class AppPathsImpl implements AppPaths {
     private Path userDir = Paths.get(System.getProperty("user.home"));
 
     @Override
+    public Path getBuildPath() {
+        return rootPath.resolve(appOptions.getBuildPath());
+    }
+
+    @Override
+    public Path getServerBuildPath() {
+        return getBuildPath().resolve(appOptions.getServerPath());
+    }
+
+    @Override
     public Path getSrcPath() {
         return rootPath.resolve(appOptions.getSrcPath());
     }

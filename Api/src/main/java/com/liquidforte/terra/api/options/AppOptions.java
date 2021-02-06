@@ -13,6 +13,8 @@ public interface AppOptions {
 
     String getSrcPath();
 
+    String getBuildPath();
+
     String getMCPath();
 
     String getTerraPath();

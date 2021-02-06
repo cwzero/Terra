@@ -6,12 +6,18 @@ import com.liquidforte.terra.command.LockCommand;
 import com.liquidforte.terra.util.ForgeUtil;
 
 import java.nio.file.Path;
+import java.util.Set;
 
 public class InstallForgeCommand extends LockCommand {
     @Inject
     public InstallForgeCommand(CommandContext context) {
         super(context);
         setDependencies("installJava");
+    }
+
+    @Override
+    public Set<String> getAlias() {
+        return Set.of("install-forge");
     }
 
     @Override

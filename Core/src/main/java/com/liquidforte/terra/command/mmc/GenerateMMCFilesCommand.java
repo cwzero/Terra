@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class GenerateMMCFilesCommand extends AbstractCommand {
     private final ObjectMapper mapper;
@@ -25,6 +22,11 @@ public class GenerateMMCFilesCommand extends AbstractCommand {
         super(context);
         this.mapper = mapper;
         setDependencies("installJava");
+    }
+
+    @Override
+    public Set<String> getAlias() {
+        return Set.of("generate-mmc");
     }
 
     private void generateInstanceCfg() {

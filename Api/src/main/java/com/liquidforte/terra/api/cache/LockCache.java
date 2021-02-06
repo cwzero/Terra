@@ -18,6 +18,4 @@ public interface LockCache {
     void load();
 
     void save();
-
-    void updateAll();
 }

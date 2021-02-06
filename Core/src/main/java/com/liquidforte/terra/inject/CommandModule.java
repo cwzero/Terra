@@ -21,6 +21,9 @@ public class CommandModule extends AbstractModule {
         bind(CommandFactory.class).to(CommandFactoryImpl.class);
 
         Multibinder<Command> commandBinder = Multibinder.newSetBinder(binder(), Command.class);
+        commandBinder.addBinding().to(BuildServerCommand.class);
+        commandBinder.addBinding().to(CleanCommand.class);
+        commandBinder.addBinding().to(CleanModsCommand.class);
         commandBinder.addBinding().to(CommandsCommand.class);
         commandBinder.addBinding().to(DownloadCommand.class);
         commandBinder.addBinding().to(GenerateMMCFilesCommand.class);

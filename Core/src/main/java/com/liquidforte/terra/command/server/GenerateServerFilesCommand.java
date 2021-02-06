@@ -8,12 +8,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Set;
 
 public class GenerateServerFilesCommand extends LockCommand {
     @Inject
     public GenerateServerFilesCommand(CommandContext context) {
         super(context);
         setDependencies("installForge");
+    }
+
+    @Override
+    public Set<String> getAlias() {
+        return Set.of("generate-server");
     }
 
     private String setJavaVersion() {

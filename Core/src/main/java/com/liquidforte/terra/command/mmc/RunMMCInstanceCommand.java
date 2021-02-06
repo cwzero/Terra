@@ -5,11 +5,18 @@ import com.liquidforte.terra.api.command.CommandContext;
 import com.liquidforte.terra.command.AbstractCommand;
 import com.liquidforte.terra.util.ExecUtil;
 
+import java.util.Set;
+
 public class RunMMCInstanceCommand extends AbstractCommand {
     @Inject
     public RunMMCInstanceCommand(CommandContext context) {
         super(context);
         setDependencies("installMMC", "install");
+    }
+
+    @Override
+    public Set<String> getAlias() {
+        return Set.of("run-mmc-instance");
     }
 
     @Override

@@ -10,11 +10,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Set;
 
 public class LinkMMCCommand extends AbstractCommand {
     @Inject
     public LinkMMCCommand(CommandContext context) {
         super(context);
+    }
+
+    @Override
+    public Set<String> getAlias() {
+        return Set.of("link-mmc");
     }
 
     @Override

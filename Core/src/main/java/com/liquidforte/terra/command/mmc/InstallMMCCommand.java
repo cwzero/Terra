@@ -8,12 +8,18 @@ import com.liquidforte.terra.util.MMCUtil;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 
 public class InstallMMCCommand extends AbstractCommand {
     @Inject
     public InstallMMCCommand(CommandContext context) {
         super(context);
         setDependencies("linkMMC", "generateMMCFiles");
+    }
+
+    @Override
+    public Set<String> getAlias() {
+        return Set.of("install-mmc");
     }
 
     @Override

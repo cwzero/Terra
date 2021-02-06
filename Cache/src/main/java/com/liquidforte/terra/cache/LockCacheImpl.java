@@ -168,11 +168,4 @@ public class LockCacheImpl implements LockCache {
         }
         LOG.info("Saved lock cache");
     }
-
-    @Override
-    public void updateAll() {
-        // TODO: Implement
-        // TODO: Add Command
-
-    }
 }

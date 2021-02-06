@@ -16,6 +16,11 @@ public class CommandsCommand extends AbstractCommand {
     }
 
     @Override
+    public Set<String> getAlias() {
+        return Set.of("help");
+    }
+
+    @Override
     public void doRun() {
         commands.stream().map(it -> it.getCommand()).forEach(System.out::println);
     }

@@ -2,6 +2,7 @@ package com.liquidforte.terra.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandContext;
 
 import java.io.*;

@@ -1,9 +1,13 @@
 package com.liquidforte.terra.command;
 
 import com.google.inject.Inject;
+import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandContext;
 import com.liquidforte.terra.api.model.Group;
 import com.liquidforte.terra.api.model.ModSpec;
+import com.liquidforte.terra.command.mmc.RunMMCCommand;
+import com.liquidforte.terra.command.mmc.RunMMCInstanceCommand;
+import com.liquidforte.terra.command.server.RunServerCommand;
 
 public class InstallCommand extends LockCommand {
     @Inject
