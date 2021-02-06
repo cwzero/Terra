@@ -68,6 +68,7 @@ Any constructive criticism/feedback is welcome.
 I could use some help with documentation and testing.
 Need to determine what permissions, etc are required for the symbolic linking steps
 I plan to add exporters for the CurseForge client and MultiMC. The pack.lock file is practically a curse manifest already, so this should be quite easy.
+I could also add a CurseForge zip importer, if that seems useful.
 The README is a mess, and the rest is entirely undocumented beyond the ```terra help``` command.
 
 Reddit Discussion: https://www.reddit.com/r/ModdedMinecraft/comments/le6m8m/tool_for_building_modpacks/
