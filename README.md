@@ -39,6 +39,8 @@ The contents of the mods array is using curseforge slugs, which are used with th
 slug for a mod, search it at https://www.curseforge.com/minecraft/mc-mods, and use the slug from the page for example
 https://www.curseforge.com/minecraft/mc-mods/{slug}
 
+If there's an error when searching for the mod's ID, it will ask you to manually input it.  This could be bypassed, but would result in drastic time increases for these cases instead.
+
 TODO: is there a better way to check slugs?
 
 It is currently windows-only.  If there's anybody interested who's running mac/linux who wants to help me fix it for those systems, I don't expect it to be difficult.
