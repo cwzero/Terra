@@ -10,6 +10,11 @@ The mods themselves are specified using a json format, where you create json fil
 Why should I use this tool?
 - I think it should work well for pretty much any modpack developer, especially ones who are familiar with git or already using git.  It's designed to provide a superior 
 experience to using the CurseForge client or similar software to develop modpacks, presuming one is somewhat comfortable using a (hopefully) simple command-line tool.  The workflow should hopefully be relatively accessible even if you use only one or two of the commands available.
+The specific advantages over using something like a curseforge manifest in git:
+    - json format with slugs, so the modlist is human readable
+    - caching which works with git branch-switching if you run the right commands ```terra cleanMods install``` for example
+    - synching of configs with MultiMC and a local server, so you can for example run commands on the server which modify configs, and it will show up in git
+        (One of my packs I remember losing a lot of /projecte setEMCs when I ran them on the server and forgot to copy the config to the git repo)
 
 Uses https://twitchappapi.docs.apiary.io/ to get mod info.
 
