@@ -22,6 +22,9 @@ public class DownloadUtil {
 
     public static void download(String url, File destFile) {
         if (!destFile.exists()) {
+            if (!destFile.getParentFile().exists()) {
+                destFile.getParentFile().mkdirs();
+            }
             try {
                 URLConnection conn = new URL(url).openConnection();
                 InputStream input = conn.getInputStream();

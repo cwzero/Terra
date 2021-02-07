@@ -29,7 +29,7 @@ public class GenerateServerFilesCommand extends LockCommand {
     private void generateServerBat() {
         Path serverBatPath = getAppPaths().getServerPath().resolve("server.bat");
 
-        serverBatPath.getParent().toFile().mkdirs();
+        serverBatPath.getParent().toAbsolutePath().toFile().mkdirs();
 
         try {
             Files.write(serverBatPath, Arrays.asList(
@@ -46,7 +46,7 @@ public class GenerateServerFilesCommand extends LockCommand {
     private void generateServerRunnerBat() {
         Path serverRunnerBatPath = getAppPaths().getServerPath().resolve("server_runner.bat");
 
-        serverRunnerBatPath.getParent().toFile().mkdirs();
+        serverRunnerBatPath.getParent().toAbsolutePath().toFile().mkdirs();
 
         try {
             Files.write(serverRunnerBatPath, Arrays.asList(
@@ -61,7 +61,7 @@ public class GenerateServerFilesCommand extends LockCommand {
     private void generateEula() {
         Path eulaPath = getAppPaths().getServerPath().resolve("eula.txt");
 
-        eulaPath.getParent().toFile().mkdirs();
+        eulaPath.getParent().toAbsolutePath().toFile().mkdirs();
 
         try {
             Files.write(eulaPath, Arrays.asList("eula=true"));
@@ -73,6 +73,11 @@ public class GenerateServerFilesCommand extends LockCommand {
     @Override
     protected void doRun() {
         // TODO: OS Dependent
+        try {
+            Files.createDirectories(getAppPaths().getServerPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         generateServerBat();
         generateServerRunnerBat();
         generateEula();
