@@ -32,6 +32,8 @@ public class GenerateMMCFilesCommand extends AbstractCommand {
     private void generateInstanceCfg() {
         Path instanceCfgPath = getAppPaths().getMMCInstancePath().resolve("instance.cfg");
 
+        instanceCfgPath.getParent().toFile().mkdirs();
+
         try {
             Files.write(instanceCfgPath, Arrays.asList(
                     "InstanceType=OneSix",
@@ -48,6 +50,8 @@ public class GenerateMMCFilesCommand extends AbstractCommand {
 
     private void generatePackMmc() {
         Path packmmcPath = getAppPaths().getMMCInstancePath().resolve("mmc-pack.json");
+
+        packmmcPath.getParent().toFile().mkdirs();
 
         try {
             PackMmc packMmc = new PackMmc();
@@ -67,12 +71,14 @@ public class GenerateMMCFilesCommand extends AbstractCommand {
     private void generateMultimcCfg() {
         Path multimcCfgPath = getAppPaths().getMMCPath().resolve("multimc.cfg");
 
+        multimcCfgPath.getParent().toFile().mkdirs();
+
         try {
             Files.write(multimcCfgPath, Arrays.asList(
                     "Analytics=true",
                     "AnalyticsSeen=2",
                     "AnalyticsClientId=" + UUID.randomUUID(),
-                "JavaPath=" + getAppPaths().getJavaBinPath().resolve("javaw.exe").toAbsolutePath().toString().replace("\\", "/"),
+                    "JavaPath=" + getAppPaths().getJavaBinPath().resolve("javaw.exe").toAbsolutePath().toString().replace("\\", "/"),
                     "Language=en",
                     "LastHostname=" + InetAddress.getLocalHost().getHostName()
             ));
@@ -83,18 +89,9 @@ public class GenerateMMCFilesCommand extends AbstractCommand {
 
     @Override
     public void doRun() {
-
         generateMultimcCfg();
         generateInstanceCfg();
         generatePackMmc();
-
-        /*
-        try {
-            Files.createFile(getAppPaths().getMMCPath().resolve("qt.conf"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         */
     }
 
     @Data
