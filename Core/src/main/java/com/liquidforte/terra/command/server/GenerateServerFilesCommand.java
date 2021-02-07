@@ -29,6 +29,8 @@ public class GenerateServerFilesCommand extends LockCommand {
     private void generateServerBat() {
         Path serverBatPath = getAppPaths().getServerPath().resolve("server.bat");
 
+        serverBatPath.getParent().toFile().mkdirs();
+
         try {
             Files.write(serverBatPath, Arrays.asList(
                     "@ECHO OFF",
@@ -44,6 +46,8 @@ public class GenerateServerFilesCommand extends LockCommand {
     private void generateServerRunnerBat() {
         Path serverRunnerBatPath = getAppPaths().getServerPath().resolve("server_runner.bat");
 
+        serverRunnerBatPath.getParent().toFile().mkdirs();
+
         try {
             Files.write(serverRunnerBatPath, Arrays.asList(
                     "@ECHO OFF",
@@ -56,6 +60,8 @@ public class GenerateServerFilesCommand extends LockCommand {
 
     private void generateEula() {
         Path eulaPath = getAppPaths().getServerPath().resolve("eula.txt");
+
+        eulaPath.getParent().toFile().mkdirs();
 
         try {
             Files.write(eulaPath, Arrays.asList("eula=true"));
