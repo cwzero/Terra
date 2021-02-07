@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class AppConfigProvider implements Provider<AppConfig> {
@@ -28,21 +29,17 @@ public class AppConfigProvider implements Provider<AppConfig> {
         }
 
         if (!appConfigFile.exists()) {
+            return new AppConfigImpl();
+        } else {
+            AppConfig result = new AppConfigImpl();
+
             try {
-                appConfigFile.createNewFile();
+                mapper.readerForUpdating(result).readValue(appConfigFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            return result;
         }
-
-        AppConfig result = new AppConfigImpl();
-
-        try {
-            mapper.readerForUpdating(result).readValue(appConfigFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
     }
 }
