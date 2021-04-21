@@ -11,9 +11,8 @@ public class RunServerCommand extends AbstractCommand {
     @Inject
     public RunServerCommand(CommandContext context) {
         super(context);
-        setDependencies("generateServerFiles", "install");
+        setDependencies("generateServerFiles", "install", "installForge", "linkServer");
     }
-
 
     @Override
     public Set<String> getAlias() {

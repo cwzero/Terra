@@ -7,6 +7,7 @@ import com.liquidforte.terra.api.curse.CurseClient;
 import com.liquidforte.terra.api.service.FileService;
 import com.liquidforte.terra.api.service.ForgeService;
 import com.liquidforte.terra.api.service.ModService;
+import com.liquidforte.terra.api.service.SearchService;
 import com.liquidforte.terra.curse.*;
 
 public class CurseClientModule extends AbstractModule {
@@ -16,6 +17,7 @@ public class CurseClientModule extends AbstractModule {
         install(new JerseyModule());
 
         bind(CurseClient.class).to(CurseClientImpl.class);
+        bind(SearchService.class).to(AddonSearchService.class);
         bind(AddonSearchService.class).to(AddonSearchServiceImpl.class);
 
         bind(FileService.class).to(FileServiceImpl.class).in(Singleton.class);

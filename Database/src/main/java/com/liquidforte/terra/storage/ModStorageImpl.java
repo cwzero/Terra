@@ -34,4 +34,9 @@ public class ModStorageImpl implements ModStorage {
             throw new RuntimeException("Tried to store an invalid mod: {addonId:" + addonId + ",slug:" +slug + "}");
         }
     }
+
+    @Override
+    public long getModCount() {
+        return modDatabase.getJdbi().withExtension(ModDao.class, dao -> dao.getModCount());
+    }
 }

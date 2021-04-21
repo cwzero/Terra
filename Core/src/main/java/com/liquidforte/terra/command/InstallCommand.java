@@ -1,15 +1,16 @@
 package com.liquidforte.terra.command;
 
 import com.google.inject.Inject;
-import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandContext;
 import com.liquidforte.terra.api.model.Group;
 import com.liquidforte.terra.api.model.ModSpec;
-import com.liquidforte.terra.command.mmc.RunMMCCommand;
-import com.liquidforte.terra.command.mmc.RunMMCInstanceCommand;
-import com.liquidforte.terra.command.server.RunServerCommand;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class InstallCommand extends LockCommand {
+    private static final ExecutorService exec = Executors.newCachedThreadPool();
+
     @Inject
     public InstallCommand(CommandContext context) {
         super(context);
@@ -19,14 +20,18 @@ public class InstallCommand extends LockCommand {
     public void doRun() {
         for (Group group : getGroupLoader().loadGroups()) {
             for (ModSpec spec : group.getMods()) {
-                String slug = spec.getSlug();
+                exec.execute(() -> {
+                    String slug = spec.getSlug();
 
-                long addonId = getModCache().getAddonId(slug);
-                long fileId = getLockCache().getLock(addonId);
+                    long addonId = getModCache().getAddonId(slug);
+                    long fileId = getLockCache().getLock(addonId);
 
-                getFileCache().installFile(addonId, fileId);
+                    getFileCache().installFile(addonId, fileId);
+                });
             }
         }
+
+        exec.shutdown();
     }
 
     @Override

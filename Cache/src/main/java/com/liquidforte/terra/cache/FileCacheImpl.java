@@ -30,6 +30,9 @@ public class FileCacheImpl implements FileCache {
         if (result == null) {
             result = fileService.getFile(addonId, fileId);
             fileStorage.setFile(addonId, result);
+
+            var dependencies = fileService.getDependencies(addonId, fileId);
+            dependencies.forEach(dep -> fileStorage.addDependency(addonId, fileId, dep));
         }
 
         return result;
@@ -106,13 +109,6 @@ public class FileCacheImpl implements FileCache {
 
     @Override
     public List<Long> getModDependencies(long addonId, long fileId) {
-        List<Long> dependencies = fileStorage.getDependencies(addonId, fileId);
-
-        if (dependencies == null || dependencies.isEmpty()) {
-            dependencies = fileService.getDependencies(addonId, fileId);
-            dependencies.forEach(dep -> fileStorage.addDependency(addonId, fileId, dep));
-        }
-
-        return dependencies;
+        return fileStorage.getDependencies(addonId, fileId);
     }
 }

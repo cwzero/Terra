@@ -13,4 +13,7 @@ public interface ModDao {
 
     @SqlQuery("SELECT ADDON_ID FROM ADDON WHERE SLUG = :slug")
     long getAddonId(@Bind("slug") String slug);
+
+    @SqlQuery("SELECT COUNT (*) FROM ADDON")
+    long getModCount();
 }

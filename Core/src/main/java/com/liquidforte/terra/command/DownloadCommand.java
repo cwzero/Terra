@@ -7,7 +7,11 @@ import com.liquidforte.terra.api.model.ModSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class DownloadCommand extends LockCommand {
+    private static final ExecutorService exec = Executors.newCachedThreadPool();
     private static final Logger LOG = LoggerFactory.getLogger(DownloadCommand.class);
 
     @Inject
@@ -22,13 +26,17 @@ public class DownloadCommand extends LockCommand {
         for (Group group : getGroupLoader().loadGroups()) {
             LOG.info("Found group: " + group.getId());
             for (ModSpec spec : group.getMods()) {
-                String slug = spec.getSlug();
-                long addonId = getModCache().getAddonId(slug);
-                long fileId = getLockCache().getLock(addonId);
+                exec.execute(() -> {
+                    String slug = spec.getSlug();
+                    long addonId = getModCache().getAddonId(slug);
+                    long fileId = getLockCache().getLock(addonId);
 
-                getFileCache().getFileData(addonId, fileId);
+                    getFileCache().getFileData(addonId, fileId);
+                });
             }
         }
+
+        exec.shutdown();
     }
 
     @Override

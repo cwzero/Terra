@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class ModServiceImpl implements ModService {
@@ -37,5 +38,10 @@ public class ModServiceImpl implements ModService {
         } else {
             return result.get().getId();
         }
+    }
+
+    @Override
+    public void getAddonId(String minecraftVersion, String[] alternateVersions, String slug, BiConsumer<String, Long> successCallback, BiConsumer<String, Long> failureCallback) {
+
     }
 }

@@ -7,11 +7,11 @@ import com.liquidforte.terra.curse.model.CurseAddonSearchRequest;
 import com.liquidforte.terra.curse.model.CurseAddonSearchResult;
 import lombok.RequiredArgsConstructor;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
@@ -57,9 +57,6 @@ public class AddonSearchServiceImpl implements AddonSearchService {
             }
         }
 
-        return Optional.empty();
-        /*
-
         if (filter.length() > 3) {
             String f = filter.substring(0, filter.length() - 1);
 
@@ -67,7 +64,6 @@ public class AddonSearchServiceImpl implements AddonSearchService {
         }
 
         return findBySlug(mcVer, altVers, "", slug);
-         */
     }
 
     public Optional<CurseAddonSearchResult> findBySlug(String mcVer, String filter, String slug) {
@@ -108,9 +104,79 @@ public class AddonSearchServiceImpl implements AddonSearchService {
         return Optional.empty();
     }
 
+    public boolean findBySlug(String mcVer, String filter, String slug, Consumer<CurseAddonSearchResult> successCallback, Consumer<CurseAddonSearchResult> failureCallback) {
+        CurseAddonSearchRequest request = new CurseAddonSearchRequest();
+        request.setSearchFilter(filter);
+        request.setGameVersion(mcVer);
+
+        List<CurseAddonSearchResult> results = searchAddons(request);
+        System.out.println("Searching: " + filter + " version: " + mcVer);
+        System.out.println("Scanning page: " + request.getIndex());
+
+        while (!results.isEmpty()) {
+            results.forEach(it -> {
+                if (it.getSlug().equalsIgnoreCase(slug)) {
+                    successCallback.accept(it);
+                    return;
+                } else {
+                    failureCallback.accept(it);
+                }
+            });
+
+            request.setIndex(request.getIndex() + 1);
+            System.out.print("\033[1A");
+            System.out.println("Scanning page " + request.getIndex());
+            results = searchAddons(request);
+        }
+
+        if (filter.contains("+")) {
+            String[] f = filter.split("\\+");
+            for (String fi : f) {
+                if (fi.length() >= 3) {
+                    return findBySlug(mcVer, fi, slug, successCallback, failureCallback);
+                }
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public Optional<CurseAddonSearchResult> findBySlug(String mcVer, String[] altVers, String slug) {
         System.out.println("Searching for addon id for slug: " + slug);
         return findBySlug(mcVer, altVers, slug, slug);
+    }
+
+    @Override
+    public boolean findBySlug(String mcVer, String[] altVers, String slug, Consumer<CurseAddonSearchResult> successCallback, Consumer<CurseAddonSearchResult> failureCallback) {
+        return findBySlug(mcVer, altVers, slug, slug, successCallback, failureCallback);
+    }
+
+    private boolean findBySlug(String mcVer, String[] altVers, String filter, String slug, Consumer<CurseAddonSearchResult> successCallback, Consumer<CurseAddonSearchResult> failureCallback) {
+        if (!findBySlug(mcVer, filter, slug, successCallback, failureCallback)) {
+            for (String altVer: altVers) {
+                if (findBySlug(altVer, filter, slug, successCallback, failureCallback)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Map<String, Long> search(String minecraftVersion, int count) {
+        CurseAddonSearchRequest request = new CurseAddonSearchRequest();
+        request.setGameVersion(minecraftVersion);
+        request.setPageSize(count);
+
+        List<CurseAddonSearchResult> result = searchAddons(request);
+
+        Map<String, Long> res = new HashMap<>();
+
+        for (CurseAddonSearchResult mod: result) {
+            res.put(mod.getSlug(), mod.getId());
+        }
+
+        return res;
     }
 }
