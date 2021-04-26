@@ -1,5 +1,5 @@
 plugins {
-    id("com.github.ben-manes.versions") version "0.36.0"
+    id("com.github.ben-manes.versions") version "0.38.0"
     id("java-library")
     id("application")
     id("com.github.johnrengelman.shadow") version "6.1.0"
@@ -10,19 +10,18 @@ allprojects {
 
     repositories {
         mavenCentral()
-        jcenter()
         google()
     }
 
     dependencies {
-        annotationProcessor("org.projectlombok:lombok:1.18.18")
-        compileOnly("org.projectlombok:lombok:1.18.18")
+        annotationProcessor("org.projectlombok:lombok:1.18.20")
+        compileOnly("org.projectlombok:lombok:1.18.20")
 
-        testImplementation(platform("org.junit:junit-bom:5.7.0"))
+        testImplementation(platform("org.junit:junit-bom:5.8.0-M1"))
         testImplementation("org.junit.jupiter:junit-jupiter")
 
-        testImplementation("org.mockito:mockito-core:3.7.7")
-        testImplementation("org.mockito:mockito-junit-jupiter:3.7.7")
+        testImplementation("org.mockito:mockito-core:3.9.0")
+        testImplementation("org.mockito:mockito-junit-jupiter:3.9.0")
 
         testImplementation("org.assertj:assertj-core:3.19.0")
     }
@@ -38,7 +37,7 @@ dependencies {
     implementation(project(":CurseClient"))
     implementation(project(":Database"))
 
-    implementation("com.netflix.governator:governator-commons-cli:1.17.11")
+    implementation("com.netflix.governator:governator-commons-cli:1.17.12")
 
     runtimeOnly("org.slf4j:slf4j-simple:1.7.30")
 }

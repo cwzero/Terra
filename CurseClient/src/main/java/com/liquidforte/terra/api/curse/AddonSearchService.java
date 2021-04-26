@@ -1,15 +1,13 @@
 package com.liquidforte.terra.api.curse;
 
-import com.liquidforte.terra.api.service.SearchService;
 import com.liquidforte.terra.curse.model.CurseAddonSearchRequest;
 import com.liquidforte.terra.curse.model.CurseAddonSearchResult;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public interface AddonSearchService extends AddonSearchAPI, SearchService {
+public interface AddonSearchService extends AddonSearchAPI {
     default List<CurseAddonSearchResult> searchAddons(CurseAddonSearchRequest request) {
         return searchAddons(
                 request.getCategoryId(),

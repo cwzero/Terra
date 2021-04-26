@@ -1,5 +1,5 @@
 package com.liquidforte.terra.api.storage;
 
-public interface FileStorage {
+public interface GroupStorage {
 
 }

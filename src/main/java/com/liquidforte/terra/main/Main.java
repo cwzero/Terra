@@ -1,58 +1,54 @@
 package com.liquidforte.terra.main;
 
 import com.google.inject.Injector;
-import com.liquidforte.terra.api.cache.LockCache;
-import com.liquidforte.terra.api.command.Command;
-import com.liquidforte.terra.api.command.CommandParser;
+import com.liquidforte.terra.api.application.Application;
 import com.liquidforte.terra.api.database.DatabaseServer;
-import com.liquidforte.terra.cache.inject.CacheModule;
-import com.liquidforte.terra.curse.inject.CurseClientModule;
 import com.liquidforte.terra.database.inject.DatabaseModule;
 import com.liquidforte.terra.inject.AppModule;
-import com.liquidforte.terra.inject.CommandModule;
-import com.liquidforte.terra.inject.CoreModule;
-import com.liquidforte.terra.inject.JacksonModule;
 import com.netflix.governator.guice.LifecycleInjector;
 import com.netflix.governator.lifecycle.LifecycleManager;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class Main {
     public static void main(String[] args) throws Exception {
-        Injector injector = LifecycleInjector.builder()
-                .withModules(new AppModule(args),
-                        new CacheModule(),
-                        new CommandModule(),
-                        new CoreModule(),
-                        new CurseClientModule(),
-                        new DatabaseModule(),
-                        new JacksonModule())
-                .build().createInjector();
+        Injector injector = createInjector(args);
+
+        ExecutorService exec = injector.getInstance(ExecutorService.class);
 
         try (LifecycleManager manager = injector.getInstance(LifecycleManager.class)) {
             manager.start();
-
             runApp(injector);
+        }
+
+        shutdown(exec);
+    }
+
+    private static void shutdown(ExecutorService exec) {
+        exec.shutdown();
+
+        try {
+            while (!exec.awaitTermination(5, TimeUnit.MINUTES)) {
+            }
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
     }
 
-    public static void runApp(Injector injector) {
+    private static Injector createInjector(String[] args) {
+        return LifecycleInjector.builder().withModules(
+                new AppModule(args),
+                new DatabaseModule()
+                // TODO: Add Modules
+        ).build().createInjector();
+    }
+
+    private static void runApp(Injector injector) {
+        Application application = injector.getInstance(Application.class);
         try (DatabaseServer databaseServer = injector.getInstance(DatabaseServer.class)) {
             databaseServer.start();
-
-            CommandParser parser = injector.getInstance(CommandParser.class);
-            Command command = parser.parse();
-
-            if (command != null) {
-                if (command.needsLockCache()) {
-                    LockCache lockCache = injector.getInstance(LockCache.class);
-                    lockCache.load();
-
-                    command.run();
-
-                    lockCache.save();
-                } else {
-                    command.run();
-                }
-            }
+            application.run();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

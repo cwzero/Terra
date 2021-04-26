@@ -1,8 +1,10 @@
 package com.liquidforte.terra.api.command;
 
+import com.liquidforte.terra.api.context.ContextRunnable;
+
 import java.util.Set;
 
-public interface Command extends Runnable {
+public interface Command extends ContextRunnable<CommandContext>, Runnable {
     default String getCommand() {
         String name = getClass().getName();
 

@@ -7,9 +7,7 @@ import com.liquidforte.terra.curse.model.CurseAddonSearchRequest;
 import com.liquidforte.terra.curse.model.CurseAddonSearchResult;
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -154,29 +152,12 @@ public class AddonSearchServiceImpl implements AddonSearchService {
 
     private boolean findBySlug(String mcVer, String[] altVers, String filter, String slug, Consumer<CurseAddonSearchResult> successCallback, Consumer<CurseAddonSearchResult> failureCallback) {
         if (!findBySlug(mcVer, filter, slug, successCallback, failureCallback)) {
-            for (String altVer: altVers) {
+            for (String altVer : altVers) {
                 if (findBySlug(altVer, filter, slug, successCallback, failureCallback)) {
                     return true;
                 }
             }
         }
         return false;
-    }
-
-    @Override
-    public Map<String, Long> search(String minecraftVersion, int count) {
-        CurseAddonSearchRequest request = new CurseAddonSearchRequest();
-        request.setGameVersion(minecraftVersion);
-        request.setPageSize(count);
-
-        List<CurseAddonSearchResult> result = searchAddons(request);
-
-        Map<String, Long> res = new HashMap<>();
-
-        for (CurseAddonSearchResult mod: result) {
-            res.put(mod.getSlug(), mod.getId());
-        }
-
-        return res;
     }
 }

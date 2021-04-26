@@ -1,5 +1,5 @@
 package com.liquidforte.terra.api.service;
 
-public interface FileService {
+public interface LockService {
 
 }
