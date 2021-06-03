@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DownloadCommand extends LockCommand {
-    private static final ExecutorService exec = Executors.newCachedThreadPool();
     private static final Logger LOG = LoggerFactory.getLogger(DownloadCommand.class);
 
     @Inject
@@ -22,6 +21,7 @@ public class DownloadCommand extends LockCommand {
     @Override
     public void doRun() {
         LOG.info("Download Command running!");
+        ExecutorService exec = getExecutorService();
 
         for (Group group : getGroupLoader().loadGroups()) {
             LOG.info("Found group: " + group.getId());
@@ -29,9 +29,13 @@ public class DownloadCommand extends LockCommand {
                 exec.execute(() -> {
                     String slug = spec.getSlug();
                     long addonId = getModCache().getAddonId(slug);
-                    long fileId = getLockCache().getLock(addonId);
+                    if (addonId > 0) {
+                        long fileId = getLockCache().getLock(addonId);
 
-                    getFileCache().getFileData(addonId, fileId);
+                        getFileCache().getFileData(addonId, fileId);
+                    } else {
+                        throw new RuntimeException("Couldn't get id for slug: \"" + slug + "\"");
+                    }
                 });
             }
         }

@@ -13,6 +13,7 @@ import com.liquidforte.terra.api.options.AppOptions;
 import com.liquidforte.terra.api.options.AppPaths;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 public abstract class AbstractCommand implements Command, CommandContext {
@@ -56,6 +57,9 @@ public abstract class AbstractCommand implements Command, CommandContext {
         }
         return false;
     }
+
+    @Override
+    public ExecutorService getExecutorService() { return context.getExecutorService(); }
 
     @Override
     public CommandParser getCommandParser() {

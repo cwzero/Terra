@@ -14,6 +14,8 @@ import com.liquidforte.terra.api.options.AppPaths;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.concurrent.ExecutorService;
+
 @Data
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class CommandContextImpl implements CommandContext {
@@ -25,6 +27,12 @@ public class CommandContextImpl implements CommandContext {
     private final Provider<FileCache> fileCacheProvider;
     private final Provider<LockCache> lockCacheProvider;
     private final Provider<ModCache> modCacheProvider;
+    private final Provider<ExecutorService> executorServiceProvider;
+
+    @Override
+    public ExecutorService getExecutorService() {
+        return executorServiceProvider.get();
+    }
 
     @Override
     public CommandParser getCommandParser() {

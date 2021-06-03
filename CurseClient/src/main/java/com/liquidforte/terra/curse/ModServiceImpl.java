@@ -42,6 +42,21 @@ public class ModServiceImpl implements ModService {
 
     @Override
     public void getAddonId(String minecraftVersion, String[] alternateVersions, String slug, BiConsumer<String, Long> successCallback, BiConsumer<String, Long> failureCallback) {
+        Optional<CurseAddonSearchResult> result = addonSearchService.findBySlug(minecraftVersion, alternateVersions, slug);
+        if (result.isEmpty()) {
+            try {
+                FileOutputStream fos = new FileOutputStream("manual.txt");
+                PrintStream ps = new PrintStream(fos);
+                ps.println(slug);
+                ps.close();
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            failureCallback.accept(slug, (long)-1);
+        } else {
+            successCallback.accept(slug, result.get().getId());
+        }
     }
 }

@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class UpdateCommand extends LockCommand {
-    private static final ExecutorService exec = Executors.newCachedThreadPool();
     @Inject
     public UpdateCommand(CommandContext context) {
         super(context);
@@ -18,6 +17,7 @@ public class UpdateCommand extends LockCommand {
     @Override
     public void doRun() {
         getLockCache().updateForgeLock();
+        ExecutorService exec = getExecutorService();
 
         for (Group group : getGroupLoader().loadGroups()) {
             for (ModSpec spec : group.getMods()) {

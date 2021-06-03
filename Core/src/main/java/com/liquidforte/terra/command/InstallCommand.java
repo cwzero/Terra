@@ -9,8 +9,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class InstallCommand extends LockCommand {
-    private static final ExecutorService exec = Executors.newCachedThreadPool();
-
     @Inject
     public InstallCommand(CommandContext context) {
         super(context);
@@ -18,6 +16,8 @@ public class InstallCommand extends LockCommand {
 
     @Override
     public void doRun() {
+        ExecutorService exec = getExecutorService();
+
         for (Group group : getGroupLoader().loadGroups()) {
             for (ModSpec spec : group.getMods()) {
                 exec.execute(() -> {

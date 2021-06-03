@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 public class ResolveCommand extends LockCommand {
     private static final Logger LOG = LoggerFactory.getLogger(ResolveCommand.class);
-    private static final ExecutorService exec = Executors.newCachedThreadPool();
 
     @Inject
     public ResolveCommand(CommandContext context) {
@@ -23,6 +22,7 @@ public class ResolveCommand extends LockCommand {
     @Override
     public void doRun() {
         LOG.info("Resolve Command running!");
+        ExecutorService exec = getExecutorService();
 
         for (Group group : getGroupLoader().loadGroups()) {
             exec.execute(() -> {
