@@ -26,6 +26,7 @@ public class LinkMMCCommand extends AbstractCommand {
     @Override
     public void doRun() {
         Path[] mcPaths = {
+                getAppPaths().getMCDefaultConfigPath(),
                 getAppPaths().getMCConfigPath(),
                 getAppPaths().getMCModsPath(),
                 getAppPaths().getMCResourcesPath(),
@@ -34,6 +35,7 @@ public class LinkMMCCommand extends AbstractCommand {
         };
 
         Path[] mmcPaths = {
+                getAppPaths().getMMCDefaultConfigPath(),
                 getAppPaths().getMMCConfigPath(),
                 getAppPaths().getMMCModsPath(),
                 getAppPaths().getMMCResourcesPath(),

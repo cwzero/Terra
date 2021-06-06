@@ -16,4 +16,7 @@ public interface ModDao {
 
     @SqlQuery("SELECT COUNT (*) FROM ADDON")
     long getModCount();
+
+    @SqlUpdate("DELETE FROM ADDON WHERE SLUG = :slug")
+    void deleteAddonId(@Bind("slug") String slug);
 }

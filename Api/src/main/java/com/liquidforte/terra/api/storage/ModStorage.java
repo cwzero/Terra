@@ -6,4 +6,6 @@ public interface ModStorage {
     void setAddonId(long addonId, String slug);
 
     long getModCount();
+
+    void deleteAddonId(String slug);
 }

@@ -19,6 +19,11 @@ public class AppPathsImpl implements AppPaths {
     private Path userDir = Paths.get(System.getProperty("user.home"));
 
     @Override
+    public Path getMCDefaultConfigPath() {
+        return getMCPath().resolve(appOptions.getDefaultConfigPath());
+    }
+
+    @Override
     public Path getBuildPath() {
         return rootPath.resolve(appOptions.getBuildPath());
     }
@@ -149,6 +154,11 @@ public class AppPathsImpl implements AppPaths {
     }
 
     @Override
+    public Path getMMCDefaultConfigPath() {
+        return getMMCMCPath().resolve(appOptions.getDefaultConfigPath());
+    }
+
+    @Override
     public Path getServerConfigPath() {
         return getServerPath().resolve(appOptions.getConfigPath());
     }
@@ -171,6 +181,11 @@ public class AppPathsImpl implements AppPaths {
     @Override
     public Path getServerScriptsPath() {
         return getServerPath().resolve(appOptions.getScriptsPath());
+    }
+
+    @Override
+    public Path getServerDefaultConfigPath() {
+        return getServerPath().resolve(appOptions.getDefaultConfigPath());
     }
 
     @Override

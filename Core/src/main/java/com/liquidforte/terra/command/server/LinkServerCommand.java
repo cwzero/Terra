@@ -24,6 +24,7 @@ public class LinkServerCommand extends AbstractCommand {
     @Override
     public void doRun() {
         Path[] mcPaths = {
+                getAppPaths().getMCDefaultConfigPath(),
                 getAppPaths().getMCConfigPath(),
                 getAppPaths().getMCModsPath(),
                 getAppPaths().getMCResourcesPath(),
@@ -32,6 +33,7 @@ public class LinkServerCommand extends AbstractCommand {
         };
 
         Path[] serverPaths = {
+                getAppPaths().getServerDefaultConfigPath(),
                 getAppPaths().getServerConfigPath(),
                 getAppPaths().getServerModsPath(),
                 getAppPaths().getServerResourcesPath(),
