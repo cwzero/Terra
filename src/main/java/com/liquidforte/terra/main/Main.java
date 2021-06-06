@@ -2,6 +2,7 @@ package com.liquidforte.terra.main;
 
 import com.google.inject.Injector;
 import com.liquidforte.terra.api.cache.LockCache;
+import com.liquidforte.terra.api.cache.ModCache;
 import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.command.CommandParser;
 import com.liquidforte.terra.api.database.DatabaseServer;
@@ -61,6 +62,9 @@ public class Main {
 
             if (command != null) {
                 if (command.needsLockCache()) {
+                    ModCache modCache = injector.getInstance(ModCache.class);
+                    modCache.load();
+                    LockCache lockCache = injector.getInstance(LockCache.class);
                     lockCache.load();
                 }
 
@@ -70,6 +74,9 @@ public class Main {
 
                 if (command.needsLockCache()) {
                     lockCache.save();
+                    modCache.save();
+                } else {
+                    command.run();
                 }
             }
         } catch (Exception ex) {

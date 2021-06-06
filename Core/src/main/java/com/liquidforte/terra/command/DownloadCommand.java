@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class DownloadCommand extends LockCommand {
     private static final Logger LOG = LoggerFactory.getLogger(DownloadCommand.class);
@@ -41,6 +42,13 @@ public class DownloadCommand extends LockCommand {
         }
 
         exec.shutdown();
+        try {
+            while (!exec.awaitTermination(5, TimeUnit.MINUTES)) {
+
+            }
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

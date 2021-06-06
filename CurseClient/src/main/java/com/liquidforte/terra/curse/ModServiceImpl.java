@@ -6,12 +6,16 @@ import com.liquidforte.terra.api.service.ModService;
 import com.liquidforte.terra.curse.model.CurseAddonSearchResult;
 import lombok.RequiredArgsConstructor;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class ModServiceImpl implements ModService {
@@ -41,20 +45,11 @@ public class ModServiceImpl implements ModService {
     }
 
     @Override
-    public void getAddonId(String minecraftVersion, String[] alternateVersions, String slug, BiConsumer<String, Long> successCallback, BiConsumer<String, Long> failureCallback) {
+    public void getAddonId(String minecraftVersion, String[] alternateVersions, String slug, BiConsumer<String, Long> successCallback, Consumer<String> failureCallback) {
         Optional<CurseAddonSearchResult> result = addonSearchService.findBySlug(minecraftVersion, alternateVersions, slug);
-        if (result.isEmpty()) {
-            try {
-                FileOutputStream fos = new FileOutputStream("manual.txt");
-                PrintStream ps = new PrintStream(fos);
-                ps.println(slug);
-                ps.close();
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            failureCallback.accept(slug, (long)-1);
+        if (result.isEmpty()) {
+            failureCallback.accept(slug);
         } else {
             successCallback.accept(slug, result.get().getId());
         }

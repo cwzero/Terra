@@ -38,4 +38,6 @@ public interface AppOptions {
     String getLocalCachePath();
 
     String getCachePath();
+
+    String getDefaultConfigPath();
 }

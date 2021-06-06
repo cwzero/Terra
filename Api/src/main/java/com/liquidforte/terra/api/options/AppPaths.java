@@ -7,6 +7,8 @@ public interface AppPaths {
 
     Path getMMCInstancePath();
 
+    Path getMCDefaultConfigPath();
+
     Path getBuildPath();
 
     Path getServerBuildPath();
@@ -51,6 +53,8 @@ public interface AppPaths {
 
     Path getMMCScriptsPath();
 
+    Path getMMCDefaultConfigPath();
+
     Path getServerConfigPath();
 
     Path getServerModsPath();
@@ -60,6 +64,8 @@ public interface AppPaths {
     Path getServerSavesPath();
 
     Path getServerScriptsPath();
+
+    Path getServerDefaultConfigPath();
 
     Path getJavaPath();
 

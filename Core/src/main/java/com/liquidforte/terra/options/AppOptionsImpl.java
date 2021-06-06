@@ -29,7 +29,8 @@ public class AppOptionsImpl implements AppOptions {
                 new Option("SP", "savesPath", true, "Saves Path"),
                 new Option("SCP", "scriptsPath", true, "Scripts Path"),
                 new Option("SEP", "serverPath", true, "Server Path"),
-                new Option("BP", "buildPath", true, "Build Path")
+                new Option("BP", "buildPath", true, "Build Path"),
+                new Option("DCP", "defaultConfigPath", true, "Default Configs Path")
         };
     }
 
@@ -187,5 +188,10 @@ public class AppOptionsImpl implements AppOptions {
     @Override
     public String getCachePath() {
         return cmd.getOptionValue("cachePath", "~/.terra/cache");
+    }
+
+    @Override
+    public String getDefaultConfigPath() {
+        return cmd.getOptionValue("defaultConfigPath", "defaultconfigs");
     }
 }

@@ -7,6 +7,7 @@ import com.liquidforte.terra.api.model.ModSpec;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class UpdateCommand extends LockCommand {
     @Inject
@@ -26,6 +27,13 @@ public class UpdateCommand extends LockCommand {
         }
 
         exec.shutdown();
+        try {
+            while (!exec.awaitTermination(5, TimeUnit.MINUTES)) {
+
+            }
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

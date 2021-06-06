@@ -30,6 +30,7 @@ public class BuildServerCommand extends AbstractCommand {
         String forgeVersion = getLockCache().getForgeLock();
 
         Path[] mcPaths = {
+                getAppPaths().getMCDefaultConfigPath(),
                 getAppPaths().getMCConfigPath(),
                 getAppPaths().getMCModsPath(),
                 getAppPaths().getMCResourcesPath(),
@@ -43,10 +44,11 @@ public class BuildServerCommand extends AbstractCommand {
 
             ForgeUtil.installForge(buildDir, minecraftVersion, forgeVersion);
 
-            Files.copy(mcPaths[0], buildDir.resolve("config"));
-            Files.copy(mcPaths[1], buildDir.resolve("mods"));
-            Files.copy(mcPaths[2], buildDir.resolve("resources"));
-            Files.copy(mcPaths[4], buildDir.resolve("scripts"));
+            Files.copy(mcPaths[0], buildDir.resolve("defaultconfigs"));
+            Files.copy(mcPaths[1], buildDir.resolve("config"));
+            Files.copy(mcPaths[2], buildDir.resolve("mods"));
+            Files.copy(mcPaths[3], buildDir.resolve("resources"));
+            Files.copy(mcPaths[5], buildDir.resolve("scripts"));
 
             String zipName = getAppConfig().getPackName() + "_server-" + getAppConfig().getPackVersion() + ".zip";
             Path zipPath = buildDir.getParent().resolve(zipName);
