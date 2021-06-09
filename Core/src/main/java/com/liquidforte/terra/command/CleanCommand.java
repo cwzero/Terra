@@ -19,6 +19,6 @@ public class CleanCommand extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Clean the output from 'buildServer'";
+        return "Clean the output from 'buildServer' or 'export'";
     }
 }

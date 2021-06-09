@@ -56,15 +56,14 @@ public class Main {
         try (DatabaseServer databaseServer = injector.getInstance(DatabaseServer.class)) {
             databaseServer.start();
             LockCache lockCache = injector.getInstance(LockCache.class);
+            ModCache modCache = injector.getInstance(ModCache.class);
 
             CommandParser parser = injector.getInstance(CommandParser.class);
             Command command = parser.parse();
 
             if (command != null) {
                 if (command.needsLockCache()) {
-                    ModCache modCache = injector.getInstance(ModCache.class);
                     modCache.load();
-                    LockCache lockCache = injector.getInstance(LockCache.class);
                     lockCache.load();
                 }
 
@@ -75,8 +74,6 @@ public class Main {
                 if (command.needsLockCache()) {
                     lockCache.save();
                     modCache.save();
-                } else {
-                    command.run();
                 }
             }
         } catch (Exception ex) {

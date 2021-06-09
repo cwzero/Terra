@@ -9,7 +9,7 @@ import java.util.Comparator;
 public class CommandComparatorImpl implements Comparator<Command> {
     private enum CommandType {
         Init, Commands, Clean, CleanMods, Update, Resolve, Download, Install, Link, InstallJava, BuildServer, GenerateMMCFiles, InstallMMC, LinkMMC, RunMMC, RunMMCInstance,
-        GenerateServerFiles, InstallForge, LinkServer, RunServer
+        GenerateServerFiles, InstallForge, LinkServer, RunServer, Export
     }
 
     private CommandType getType(Command command) {

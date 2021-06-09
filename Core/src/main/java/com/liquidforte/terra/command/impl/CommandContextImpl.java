@@ -1,5 +1,6 @@
 package com.liquidforte.terra.command.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.liquidforte.terra.api.cache.FileCache;

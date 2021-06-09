@@ -22,8 +22,6 @@ public class InstallForgeCommand extends LockCommand {
 
     @Override
     protected void doRun() {
-        setDependencies("installJava");
-
         String minecraftVersion = getAppConfig().getMinecraftVersion();
         String forgeVersion = getLockCache().getForgeLock();
 

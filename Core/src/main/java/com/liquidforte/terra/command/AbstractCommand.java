@@ -34,7 +34,7 @@ public abstract class AbstractCommand implements Command, CommandContext {
     }
 
     protected Command getDependencies() {
-        if (dependencies == null) {
+        if (dependencies == null || dependencies.isEmpty()) {
             if (getDeps().length > 0) {
                 dependencies = getCommandParser().parse(getDeps());
             }
@@ -45,7 +45,7 @@ public abstract class AbstractCommand implements Command, CommandContext {
     @Override
     public boolean needsDatabase() {
         if (getDependencies() != null) {
-            return getDependencies().needsDatabase();
+            return dependencies.needsDatabase();
         }
         return false;
     }
@@ -53,7 +53,7 @@ public abstract class AbstractCommand implements Command, CommandContext {
     @Override
     public boolean needsLockCache() {
         if (getDependencies() != null) {
-            return getDependencies().needsLockCache();
+            return dependencies.needsLockCache();
         }
         return false;
     }
@@ -103,7 +103,7 @@ public abstract class AbstractCommand implements Command, CommandContext {
 
     protected void before() {
         System.out.println("Running command: " + getCommand());
-        if (dependencies != null) {
+        if (getDependencies() != null) {
             dependencies.run();
         }
     }
