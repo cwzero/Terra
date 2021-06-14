@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <File name="FaithFile" fileName="logs/terra.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+
+        <File name="InjectFile" fileName="logs/inject.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+
+        <File name="DebugFile" fileName="logs/debug.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+
+        <File name="DefaultFile" fileName="logs/default.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+
+        <!-- By default => console -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef level="DEBUG" ref="DefaultFile" />
+        </Root>
+
+        <Logger name="com.netflix.governator" level="INFO" additivity="false">
+            <AppenderRef ref="InjectFile" />
+            <AppenderRef ref="DebugFile" />
+        </Logger>
+
+        <Logger name="com.netflix.governator.guice" level="INFO" additivity="false">
+            <AppenderRef ref="InjectFile" />
+            <AppenderRef ref="DebugFile" />
+        </Logger>
+
+        <Logger name="com.liquidforte.terra" level="TRACE" additivity="false">
+            <AppenderRef ref="FaithFile" />
+            <AppenderRef ref="DebugFile" />
+        </Logger>
+    </Loggers>
+</Configuration>

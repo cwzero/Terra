@@ -43,16 +43,18 @@ public class FileServiceImpl implements FileService {
 
         Optional<Long> result = files.stream()
                 .filter(file ->
-                        file.getGameVersion().contains(mcVer) ||
+                        !file.getFileName().toLowerCase().contains("fabric") &&
+                        !(file.getGameVersion().contains("Fabric") || file.getGameVersion().contains("fabric")) &&
+                                file.getGameVersion().contains(mcVer) ||
                                 Arrays.stream(altVer).anyMatch(file.getGameVersion()::contains))
                 .findFirst()
-                .map(it -> it.getId());
+                .map(CurseFile::getId);
 
         if (result.isPresent()) {
             return result.get();
         } else {
             CurseAddonSearchResult res = addonSearchService.getAddon(addonId).get();
-            throw new RuntimeException("Failed to get addon: " + res.getSlug());
+            throw new RuntimeException("Failed to get addon(" + addonId + "): " + res.getSlug());
         }
     }
 

@@ -15,8 +15,8 @@ allprojects {
     }
 
     dependencies {
-        annotationProcessor("org.projectlombok:lombok:1.18.18")
-        compileOnly("org.projectlombok:lombok:1.18.18")
+        annotationProcessor("org.projectlombok:lombok:1.18.20")
+        compileOnly("org.projectlombok:lombok:1.18.20")
 
         testImplementation(platform("org.junit:junit-bom:5.7.0"))
         testImplementation("org.junit.jupiter:junit-jupiter")
@@ -40,7 +40,8 @@ dependencies {
 
     implementation("com.netflix.governator:governator-commons-cli:1.17.11")
 
-    runtimeOnly("org.slf4j:slf4j-simple:1.7.30")
+    runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1")
+    api("org.apache.logging.log4j:log4j-api:2.14.1")
 }
 
 application {
