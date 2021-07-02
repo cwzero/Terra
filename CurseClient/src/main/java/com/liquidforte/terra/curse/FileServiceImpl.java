@@ -29,6 +29,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Predicate;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class FileServiceImpl implements FileService {
@@ -41,12 +42,17 @@ public class FileServiceImpl implements FileService {
         List<CurseFile> files = curseFileAPI.getFiles(addonId);
         Collections.sort(files);
 
+        Predicate<CurseFile> fabricTest = file ->
+                !file.getFileName().toLowerCase().contains("fabric")
+                        && !(file.getGameVersion().contains("Fabric") || file.getGameVersion().contains("fabric"));
+
+        Predicate<CurseFile> versionTest = file -> file.getGameVersion().contains(mcVer) ||
+                Arrays.stream(altVer).anyMatch(file.getGameVersion()::contains);
+
+        Predicate<CurseFile> fileTest = fabricTest.and(versionTest);
+
         Optional<Long> result = files.stream()
-                .filter(file ->
-                        !file.getFileName().toLowerCase().contains("fabric") &&
-                        !(file.getGameVersion().contains("Fabric") || file.getGameVersion().contains("fabric")) &&
-                                file.getGameVersion().contains(mcVer) ||
-                                Arrays.stream(altVer).anyMatch(file.getGameVersion()::contains))
+                .filter(fileTest)
                 .findFirst()
                 .map(CurseFile::getId);
 

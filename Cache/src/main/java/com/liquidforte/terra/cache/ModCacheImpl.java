@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class ModCacheImpl implements ModCache {
-    private static final int MIN = 3000;
+    private static final int MIN = 200;
     private final AppConfig appConfig;
     private final ModService modService;
     private final ModStorage modStorage;

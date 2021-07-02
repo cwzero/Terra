@@ -7,10 +7,7 @@ import com.liquidforte.terra.curse.model.CurseAddonSearchRequest;
 import com.liquidforte.terra.curse.model.CurseAddonSearchResult;
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -25,6 +22,15 @@ public class AddonSearchServiceImpl implements AddonSearchService {
 
     @Override
     public List<CurseAddonSearchResult> searchAddons(long categoryId, long gameId, String gameVersion, long index, long pageSize, String searchFilter, long sectionId, long sort) {
+        if (pageSize > 50) {
+            int requestCount = (int)(pageSize / 50) + 1;
+
+            List<CurseAddonSearchResult> searchResults = new ArrayList<>();
+            for (int a = 0; a < requestCount; a++) {
+                searchResults.addAll(searchAddons(categoryId, gameId, gameVersion, index + a, 50, searchFilter, sectionId, sort));
+            }
+            return searchResults;
+        }
         return addonSearchAPI.searchAddons(categoryId, gameId, gameVersion, index, pageSize, searchFilter, sectionId, sort);
     }
 

@@ -12,7 +12,7 @@ public class CurseAddonSearchRequest {
     private long gameId = 432;
     private String gameVersion = "1.16.5";
     private long index = 0;
-    private long pageSize = 3000;
+    private long pageSize = 50;
     private String searchFilter = "";
     private long sectionId = 6;
     private long sort = 5;
