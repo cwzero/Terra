@@ -1,8 +1,8 @@
 plugins {
-    id("com.github.ben-manes.versions") version "0.36.0"
+    id("com.github.ben-manes.versions") version "0.39.0"
     id("java-library")
     id("application")
-    id("com.github.johnrengelman.shadow") version "6.1.0"
+    id("com.github.johnrengelman.shadow") version "7.1.0"
 }
 
 allprojects {
@@ -10,21 +10,20 @@ allprojects {
 
     repositories {
         mavenCentral()
-        jcenter()
         google()
     }
 
     dependencies {
-        annotationProcessor("org.projectlombok:lombok:1.18.20")
-        compileOnly("org.projectlombok:lombok:1.18.20")
+        annotationProcessor("org.projectlombok:lombok:1.18.22")
+        compileOnly("org.projectlombok:lombok:1.18.22")
 
-        testImplementation(platform("org.junit:junit-bom:5.7.0"))
+        testImplementation(platform("org.junit:junit-bom:5.8.2"))
         testImplementation("org.junit.jupiter:junit-jupiter")
 
-        testImplementation("org.mockito:mockito-core:3.7.7")
-        testImplementation("org.mockito:mockito-junit-jupiter:3.7.7")
+        testImplementation("org.mockito:mockito-core:4.1.0")
+        testImplementation("org.mockito:mockito-junit-jupiter:4.1.0")
 
-        testImplementation("org.assertj:assertj-core:3.19.0")
+        testImplementation("org.assertj:assertj-core:3.21.0")
     }
 
     tasks.withType<Test> {
@@ -38,15 +37,24 @@ dependencies {
     implementation(project(":CurseClient"))
     implementation(project(":Database"))
 
-    implementation("com.netflix.governator:governator-commons-cli:1.17.11")
+    implementation("com.netflix.governator:governator-commons-cli:1.17.12")
 
+<<<<<<< HEAD
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1")
     api("org.apache.logging.log4j:log4j-api:2.14.1")
+=======
+    runtimeOnly("org.slf4j:slf4j-simple:2.0.0-alpha5")
+}
+
+tasks.jar {
+    manifest {
+        attributes("Main-Class" to "com.liquidforte.terra.main.Main")
+    }
+>>>>>>> b537d67 (Update Dependencies)
 }
 
 application {
-    @Suppress("DEPRECATION")
-    mainClassName = "com.liquidforte.terra.main.Main"
+    mainClass.set("com.liquidforte.terra.main.Main")
 }
 
 tasks.named<JavaExec>("run") {
