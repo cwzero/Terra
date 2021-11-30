@@ -39,18 +39,14 @@ dependencies {
 
     implementation("com.netflix.governator:governator-commons-cli:1.17.12")
 
-<<<<<<< HEAD
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1")
     api("org.apache.logging.log4j:log4j-api:2.14.1")
-=======
-    runtimeOnly("org.slf4j:slf4j-simple:2.0.0-alpha5")
 }
 
 tasks.jar {
     manifest {
         attributes("Main-Class" to "com.liquidforte.terra.main.Main")
     }
->>>>>>> b537d67 (Update Dependencies)
 }
 
 application {
