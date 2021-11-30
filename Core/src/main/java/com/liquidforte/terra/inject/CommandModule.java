@@ -41,5 +41,6 @@ public class CommandModule extends AbstractModule {
         commandBinder.addBinding().to(LinkServerCommand.class);
         commandBinder.addBinding().to(ResolveCommand.class);
         commandBinder.addBinding().to(UpdateCommand.class);
+        commandBinder.addBinding().to(ManualCommand.class);
     }
 }

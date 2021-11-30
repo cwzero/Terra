@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
@@ -90,9 +91,9 @@ public class LockCacheImpl implements LockCache {
             lockStorage.setLock(addonId, result);
         }
 
-        fileService.getDependencies(addonId, result).forEach(dep -> {
-            update(dep);
-        });
+        List<Long> dependencies = fileService.getDependencies(addonId, result);
+        if (dependencies != null)
+            dependencies.forEach(this::update);
 
         return result;
     }

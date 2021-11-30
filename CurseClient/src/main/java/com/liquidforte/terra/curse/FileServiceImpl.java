@@ -39,42 +39,48 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public long getLatestFile(String mcVer, String[] altVer, long addonId) {
-        List<CurseFile> files = curseFileAPI.getFiles(addonId);
-        Collections.sort(files);
+        if (addonId > 0) {
+            List<CurseFile> files = curseFileAPI.getFiles(addonId);
+            Collections.sort(files);
 
-        Predicate<CurseFile> fabricTest = file ->
-                !file.getFileName().toLowerCase().contains("fabric")
-                        && !(file.getGameVersion().contains("Fabric") || file.getGameVersion().contains("fabric"));
+            Predicate<CurseFile> fabricTest = file -> file.getGameVersion().stream().noneMatch(it -> it.equalsIgnoreCase("fabric"));
 
-        Predicate<CurseFile> versionTest = file -> file.getGameVersion().contains(mcVer) ||
-                Arrays.stream(altVer).anyMatch(file.getGameVersion()::contains);
+            Predicate<CurseFile> versionTest = file -> file.getGameVersion().contains(mcVer) ||
+                    Arrays.stream(altVer).anyMatch(file.getGameVersion()::contains);
 
-        Predicate<CurseFile> fileTest = fabricTest.and(versionTest);
+            Predicate<CurseFile> fileTest = fabricTest.and(versionTest);
 
-        Optional<Long> result = files.stream()
-                .filter(fileTest)
-                .findFirst()
-                .map(CurseFile::getId);
+            Optional<Long> result = files.stream()
+                    .filter(fileTest)
+                    .findFirst()
+                    .map(CurseFile::getId);
 
-        if (result.isPresent()) {
-            return result.get();
+            if (result.isPresent()) {
+                return result.get();
+            } else {
+                CurseAddonSearchResult res = addonSearchService.getAddon(addonId).get();
+                throw new RuntimeException("Failed to get addon(" + addonId + "): " + res.getSlug());
+            }
         } else {
-            CurseAddonSearchResult res = addonSearchService.getAddon(addonId).get();
-            throw new RuntimeException("Failed to get addon(" + addonId + "): " + res.getSlug());
+            return -1;
         }
     }
 
     @Override
     public File getFile(long addonId, long fileId) {
-        CurseFile curseFile = curseFileAPI.getFile(addonId, fileId).get();
-        return new File(
-                curseFile.getId(),
-                curseFile.getFileName(),
-                curseFile.getFileDate(),
-                curseFile.getFileLength(),
-                curseFile.getDownloadUrl(),
-                curseFile.getPackageFingerprint()
-        );
+        if (addonId > 0 && fileId > 0) {
+            CurseFile curseFile = curseFileAPI.getFile(addonId, fileId).get();
+            return new File(
+                    curseFile.getId(),
+                    curseFile.getFileName(),
+                    curseFile.getFileDate(),
+                    curseFile.getFileLength(),
+                    curseFile.getDownloadUrl(),
+                    curseFile.getPackageFingerprint()
+            );
+        } else {
+            return null;
+        }
     }
 
     public byte[] downloadFile(File file, String downloadUrl) {
@@ -162,15 +168,19 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public List<Long> getDependencies(long addonId, long fileId) {
-        CurseFile curseFile = curseFileAPI.getFile(addonId, fileId).get();
-        List<Long> dependencies = new ArrayList<>();
+        if (addonId > 0) {
+            CurseFile curseFile = curseFileAPI.getFile(addonId, fileId).get();
+            List<Long> dependencies = new ArrayList<>();
 
-        for (CurseFileDependency dep : curseFile.getDependencies()) {
-            if (dep.getType() == 3) {
-                dependencies.add(dep.getAddonId());
+            for (CurseFileDependency dep : curseFile.getDependencies()) {
+                if (dep.getType() == 3) {
+                    dependencies.add(dep.getAddonId());
+                }
             }
-        }
 
-        return dependencies;
+            return dependencies;
+        } else {
+            return null;
+        }
     }
 }

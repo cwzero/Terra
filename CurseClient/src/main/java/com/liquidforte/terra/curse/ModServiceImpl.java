@@ -6,12 +6,9 @@ import com.liquidforte.terra.api.service.ModService;
 import com.liquidforte.terra.curse.model.CurseAddonSearchResult;
 import lombok.RequiredArgsConstructor;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.BiConsumer;
@@ -22,6 +19,7 @@ public class ModServiceImpl implements ModService {
     private final AddonSearchService addonSearchService;
 
     @Override
+    @Deprecated
     public long getAddonId(String mcVer, String[] altVers, String slug) {
         Optional<CurseAddonSearchResult> result = addonSearchService.findBySlug(mcVer, altVers, slug);
         if (result.isEmpty()) {
@@ -46,6 +44,7 @@ public class ModServiceImpl implements ModService {
 
     @Override
     public void getAddonId(String minecraftVersion, String[] alternateVersions, String slug, BiConsumer<String, Long> successCallback, Consumer<String> failureCallback) {
+        // TODO: search technique
         Optional<CurseAddonSearchResult> result = addonSearchService.findBySlug(minecraftVersion, alternateVersions, slug);
 
         if (result.isEmpty()) {
@@ -53,5 +52,16 @@ public class ModServiceImpl implements ModService {
         } else {
             successCallback.accept(slug, result.get().getId());
         }
+    }
+
+    @Override
+    public boolean getAddonId(String minecraftVersion, String slug, String filter, BiConsumer<String, Long> successCallback, Consumer<String> failureCallback) {
+        if (!addonSearchService.findBySlug(minecraftVersion, slug, filter, (result) -> {
+            successCallback.accept(slug, result.getId());
+        })) {
+            failureCallback.accept(slug);
+            return false;
+        }
+        return true;
     }
 }

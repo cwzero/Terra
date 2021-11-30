@@ -23,7 +23,7 @@ public class AddonSearchServiceImpl implements AddonSearchService {
     @Override
     public List<CurseAddonSearchResult> searchAddons(long categoryId, long gameId, String gameVersion, long index, long pageSize, String searchFilter, long sectionId, long sort) {
         if (pageSize > 50) {
-            int requestCount = (int)(pageSize / 50) + 1;
+            int requestCount = (int) (pageSize / 50) + 1;
 
             List<CurseAddonSearchResult> searchResults = new ArrayList<>();
             for (int a = 0; a < requestCount; a++) {
@@ -35,11 +35,7 @@ public class AddonSearchServiceImpl implements AddonSearchService {
     }
 
     public Optional<CurseAddonSearchResult> findBySlug(String mcVer, String[] altVers, String filter, String slug) {
-        Optional<CurseAddonSearchResult> res = Optional.empty();
-
-        if (res.isPresent()) {
-            return res;
-        }
+        Optional<CurseAddonSearchResult> res;
 
         for (String v : altVers) {
             res = findBySlug(v, filter, slug);
@@ -110,7 +106,8 @@ public class AddonSearchServiceImpl implements AddonSearchService {
         return Optional.empty();
     }
 
-    public boolean findBySlug(String mcVer, String filter, String slug, Consumer<CurseAddonSearchResult> successCallback, Consumer<CurseAddonSearchResult> failureCallback) {
+    @Override
+    public boolean findBySlug(String mcVer, String slug, String filter, Consumer<CurseAddonSearchResult> successCallback) {
         CurseAddonSearchRequest request = new CurseAddonSearchRequest();
         request.setSearchFilter(filter);
         request.setGameVersion(mcVer);
@@ -120,28 +117,17 @@ public class AddonSearchServiceImpl implements AddonSearchService {
         System.out.println("Scanning page: " + request.getIndex());
 
         while (!results.isEmpty()) {
-            results.forEach(it -> {
-                if (it.getSlug().equalsIgnoreCase(slug)) {
-                    successCallback.accept(it);
-                    return;
-                } else {
-                    failureCallback.accept(it);
+            for (CurseAddonSearchResult result : results) {
+                if (result.getSlug().equalsIgnoreCase(slug)) {
+                    successCallback.accept(result);
+                    return true;
                 }
-            });
+            }
 
             request.setIndex(request.getIndex() + 1);
             System.out.print("\033[1A");
             System.out.println("Scanning page " + request.getIndex());
             results = searchAddons(request);
-        }
-
-        if (filter.contains("+")) {
-            String[] f = filter.split("\\+");
-            for (String fi : f) {
-                if (fi.length() >= 3) {
-                    return findBySlug(mcVer, fi, slug, successCallback, failureCallback);
-                }
-            }
         }
 
         return false;
@@ -150,18 +136,19 @@ public class AddonSearchServiceImpl implements AddonSearchService {
     @Override
     public Optional<CurseAddonSearchResult> findBySlug(String mcVer, String[] altVers, String slug) {
         System.out.println("Searching for addon id for slug: " + slug);
+        // TODO: Search Technique
         return findBySlug(mcVer, altVers, slug, slug);
     }
 
     @Override
-    public boolean findBySlug(String mcVer, String[] altVers, String slug, Consumer<CurseAddonSearchResult> successCallback, Consumer<CurseAddonSearchResult> failureCallback) {
-        return findBySlug(mcVer, altVers, slug, slug, successCallback, failureCallback);
+    public boolean findBySlug(String mcVer, String[] altVers, String slug, Consumer<CurseAddonSearchResult> successCallback) {
+        return findBySlug(mcVer, altVers, slug, slug, successCallback);
     }
 
-    private boolean findBySlug(String mcVer, String[] altVers, String filter, String slug, Consumer<CurseAddonSearchResult> successCallback, Consumer<CurseAddonSearchResult> failureCallback) {
-        if (!findBySlug(mcVer, filter, slug, successCallback, failureCallback)) {
-            for (String altVer: altVers) {
-                if (findBySlug(altVer, filter, slug, successCallback, failureCallback)) {
+    private boolean findBySlug(String mcVer, String[] altVers, String filter, String slug, Consumer<CurseAddonSearchResult> successCallback) {
+        if (!findBySlug(mcVer, filter, slug, successCallback)) {
+            for (String altVer : altVers) {
+                if (findBySlug(altVer, filter, slug, successCallback)) {
                     return true;
                 }
             }
@@ -179,7 +166,7 @@ public class AddonSearchServiceImpl implements AddonSearchService {
 
         Map<String, Long> res = new HashMap<>();
 
-        for (CurseAddonSearchResult mod: result) {
+        for (CurseAddonSearchResult mod : result) {
             res.put(mod.getSlug(), mod.getId());
         }
 

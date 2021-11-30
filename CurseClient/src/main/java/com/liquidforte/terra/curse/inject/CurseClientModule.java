@@ -6,6 +6,7 @@ import com.google.inject.multibindings.Multibinder;
 import com.liquidforte.terra.api.command.Command;
 import com.liquidforte.terra.api.curse.AddonSearchService;
 import com.liquidforte.terra.api.curse.CurseClient;
+import com.liquidforte.terra.api.search.ModSearch;
 import com.liquidforte.terra.api.service.FileService;
 import com.liquidforte.terra.api.service.ForgeService;
 import com.liquidforte.terra.api.service.ModService;
@@ -23,6 +24,7 @@ public class CurseClientModule extends AbstractModule {
         bind(CurseClient.class).to(CurseClientImpl.class);
         bind(SearchService.class).to(AddonSearchService.class);
         bind(AddonSearchService.class).to(AddonSearchServiceImpl.class);
+        bind(ModSearch.class).to(ModSearchImpl.class);
 
         bind(FileService.class).to(FileServiceImpl.class).in(Singleton.class);
         bind(ForgeService.class).to(ForgeServiceImpl.class);

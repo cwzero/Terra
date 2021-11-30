@@ -3,7 +3,7 @@ package com.liquidforte.terra.cache;
 import com.google.inject.Inject;
 import com.liquidforte.terra.api.cache.ModCache;
 import com.liquidforte.terra.api.config.AppConfig;
-import com.liquidforte.terra.api.service.ModService;
+import com.liquidforte.terra.api.search.ModSearch;
 import com.liquidforte.terra.api.service.SearchService;
 import com.liquidforte.terra.api.storage.ModStorage;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 public class ModCacheImpl implements ModCache {
     private static final int MIN = 200;
     private final AppConfig appConfig;
-    private final ModService modService;
+    private final ModSearch modSearch;
     private final ModStorage modStorage;
     private final SearchService searchService;
     private final Map<String, Long> manual = new HashMap<>();
@@ -31,12 +31,12 @@ public class ModCacheImpl implements ModCache {
     @Override
     public void save() {
         try {
-            PrintWriter fos = new PrintWriter(new FileOutputStream(new File("manual.csv")), true);
+            PrintWriter fos = new PrintWriter(new FileOutputStream("manual.csv"), true);
             fos.println("slug, id");
-            for (String slug: manual.keySet()) {
+            for (String slug : manual.keySet()) {
                 long id = manual.get(slug);
 
-                fos.printf("%s, %d", slug, id);
+                fos.printf("%s, %d\n", slug, id);
             }
             fos.close();
         } catch (FileNotFoundException e) {
@@ -64,15 +64,16 @@ public class ModCacheImpl implements ModCache {
     }
 
     private void readManual(String slug) {
-        System.out.println("Failed to find id for slug: \"" + slug + "\"");
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter Id: ");
-        long id = Long.parseLong(input.nextLine().trim());
-        addManual(slug, id);
+        if (!manual.containsKey(slug)) {
+            addManual(slug, -1);
+        }
     }
 
     private void addManual(String slug, long id) {
         manual.put(slug, id);
+        if (id != -1) {
+            modStorage.setAddonId(id, slug);
+        }
     }
 
     @Override
@@ -88,17 +89,22 @@ public class ModCacheImpl implements ModCache {
 
         if (result <= 0) {
             BiConsumer<String, Long> successCallback = (foundSlug, foundId) -> {
-                modStorage.setAddonId(foundId, foundSlug);
+                if (foundId > 0) {
+                    modStorage.setAddonId(foundId, foundSlug);
+                }
             };
 
             Consumer<String> failureCallback = fSlug -> {
                 if (!manual.containsKey(fSlug)) {
                     readManual(fSlug);
                 }
-                modStorage.setAddonId(manual.get(fSlug), fSlug);
+                long id = manual.get(fSlug);
+                if (id > 0) {
+                    modStorage.setAddonId(id, fSlug);
+                }
             };
 
-            modService.getAddonId(appConfig.getMinecraftVersion(),
+            modSearch.getAddonId(appConfig.getMinecraftVersion(),
                     appConfig.getAlternateVersions().toArray(new String[0]),
                     slug, successCallback, failureCallback);
 

@@ -1,0 +1,11 @@
+To Do:
+- Smart Search, look for common terms, decide how deep to go
+- Search for multiple slugs at the same time!
+- Separate search technique, isolate it in its own module
+- Cache server, maybe with compression
+- Concurrent cache levels, store pages of data
+- HTML parsing for slug->id?
+- Asynchronous Searching - search threads, threads waiting for response
+- Only run through pages once
+- Need manual entry, separate list for things that need to be added to manual
+- Manual as read-only/append

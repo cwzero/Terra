@@ -32,7 +32,8 @@ public class FileCacheImpl implements FileCache {
             fileStorage.setFile(addonId, result);
 
             var dependencies = fileService.getDependencies(addonId, fileId);
-            dependencies.forEach(dep -> fileStorage.addDependency(addonId, fileId, dep));
+            if (dependencies != null)
+                dependencies.forEach(dep -> fileStorage.addDependency(addonId, fileId, dep));
         }
 
         return result;
@@ -71,39 +72,41 @@ public class FileCacheImpl implements FileCache {
 
         File file = getFile(addonId, fileId);
 
-        Path targetPath = appPaths.getMCModsPath().resolve(file.getFileName());
-        Path modsPath = targetPath.getParent();
+        if (file != null) {
+            Path targetPath = appPaths.getMCModsPath().resolve(file.getFileName());
+            Path modsPath = targetPath.getParent();
 
-        if (!Files.exists(modsPath)) {
-            try {
-                Files.createDirectories(modsPath);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (!Files.exists(modsPath)) {
+                try {
+                    Files.createDirectories(modsPath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
 
-        try {
-            if (!Files.exists(targetPath) || Files.size(targetPath) != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getFileHash(targetPath)) {
-                byte[] data = getFileData(addonId, fileId);
+            try {
+                if (!Files.exists(targetPath) || Files.size(targetPath) != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getFileHash(targetPath)) {
+                    byte[] data = getFileData(addonId, fileId);
 
-                if (data.length != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getByteArrayHash(data)) {
-                    throw new RuntimeException("Download for " + file.getFileName() + " failed.");
-                } else {
-                    System.out.println("Successful download for " + file.getFileName());
+                    if (data.length != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getByteArrayHash(data)) {
+                        throw new RuntimeException("Download for " + file.getFileName() + " failed.");
+                    } else {
+                        System.out.println("Successful download for " + file.getFileName());
+                    }
+
+                    FileOutputStream fos = new FileOutputStream(targetPath.toFile());
+
+                    fos.write(data);
+                    fos.flush();
+                    fos.close();
                 }
 
-                FileOutputStream fos = new FileOutputStream(targetPath.toFile());
-
-                fos.write(data);
-                fos.flush();
-                fos.close();
+                if (!Files.exists(targetPath) || Files.size(targetPath) != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getFileHash(targetPath)) {
+                    throw new RuntimeException("Download for " + file.getFileName() + " failed.");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-
-            if (!Files.exists(targetPath) || Files.size(targetPath) != file.getFileLength() || file.getFingerprint() != FingerprintUtil.getFileHash(targetPath)) {
-                throw new RuntimeException("Download for " + file.getFileName() + " failed.");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 

@@ -66,7 +66,8 @@ public class FileStorageImpl implements FileStorage {
 
     @Override
     public void setFile(long addonId, File file) {
-        fileDatabase.getJdbi().useExtension(FileDao.class, dao -> dao.insert(addonId, file));
+        if (file != null)
+            fileDatabase.getJdbi().useExtension(FileDao.class, dao -> dao.insert(addonId, file));
     }
 
     @Override
