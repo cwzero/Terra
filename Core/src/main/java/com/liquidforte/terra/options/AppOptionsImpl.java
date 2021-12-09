@@ -30,7 +30,8 @@ public class AppOptionsImpl implements AppOptions {
                 new Option("SCP", "scriptsPath", true, "Scripts Path"),
                 new Option("SEP", "serverPath", true, "Server Path"),
                 new Option("BP", "buildPath", true, "Build Path"),
-                new Option("DCP", "defaultConfigPath", true, "Default Configs Path")
+                new Option("DCP", "defaultConfigPath", true, "Default Configs Path"),
+                new Option("KP", "kubejs", true, "KubeJS Path")
         };
     }
 
@@ -178,6 +179,11 @@ public class AppOptionsImpl implements AppOptions {
     @Override
     public String getScriptsPath() {
         return cmd.getOptionValue("scriptsPath", "scripts");
+    }
+
+    @Override
+    public String getKubeJSPath() {
+        return cmd.getOptionValue("kubejsPath", "kubejs");
     }
 
     @Override

@@ -28,6 +28,7 @@ public class LinkMMCCommand extends AbstractCommand {
         Path[] mcPaths = {
                 getAppPaths().getMCDefaultConfigPath(),
                 getAppPaths().getMCConfigPath(),
+                getAppPaths().getMCKubeJSPath(),
                 getAppPaths().getMCModsPath(),
                 getAppPaths().getMCResourcesPath(),
                 getAppPaths().getMCSavesPath(),
@@ -37,6 +38,7 @@ public class LinkMMCCommand extends AbstractCommand {
         Path[] mmcPaths = {
                 getAppPaths().getMMCDefaultConfigPath(),
                 getAppPaths().getMMCConfigPath(),
+                getAppPaths().getMMCKubeJSPath(),
                 getAppPaths().getMMCModsPath(),
                 getAppPaths().getMMCResourcesPath(),
                 getAppPaths().getMMCSavesPath(),

@@ -12,10 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -27,6 +24,7 @@ public class ModCacheImpl implements ModCache {
     private final ModStorage modStorage;
     private final SearchService searchService;
     private final Map<String, Long> manual = new HashMap<>();
+    private final List<String> unresolved = new ArrayList<>();
 
     @Override
     public void save() {
@@ -38,6 +36,11 @@ public class ModCacheImpl implements ModCache {
 
                 fos.printf("%s, %d\n", slug, id);
             }
+
+            for (String slug : unresolved) {
+                fos.printf("%s, %d\n", slug, -1);
+            }
+
             fos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -71,6 +74,9 @@ public class ModCacheImpl implements ModCache {
 
     private void addManual(String slug, long id) {
         manual.put(slug, id);
+        if (id == -1) {
+            unresolved.add(slug);
+        }
         if (id != -1) {
             modStorage.setAddonId(id, slug);
         }

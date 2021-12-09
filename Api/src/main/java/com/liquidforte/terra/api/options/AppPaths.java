@@ -43,6 +43,8 @@ public interface AppPaths {
 
     Path getMCScriptsPath();
 
+    Path getMCKubeJSPath();
+
     Path getMMCConfigPath();
 
     Path getMMCModsPath();
@@ -52,6 +54,8 @@ public interface AppPaths {
     Path getMMCSavesPath();
 
     Path getMMCScriptsPath();
+
+    Path getMMCKubeJSPath();
 
     Path getMMCDefaultConfigPath();
 
@@ -64,6 +68,8 @@ public interface AppPaths {
     Path getServerSavesPath();
 
     Path getServerScriptsPath();
+
+    Path getServerKubeJSPath();
 
     Path getServerDefaultConfigPath();
 

@@ -32,6 +32,7 @@ public class BuildServerCommand extends AbstractCommand {
         Path[] mcPaths = {
                 getAppPaths().getMCDefaultConfigPath(),
                 getAppPaths().getMCConfigPath(),
+                getAppPaths().getMCKubeJSPath(),
                 getAppPaths().getMCModsPath(),
                 getAppPaths().getMCResourcesPath(),
                 getAppPaths().getMCSavesPath(),
@@ -46,9 +47,10 @@ public class BuildServerCommand extends AbstractCommand {
 
             FileUtil.copyDir(mcPaths[0], buildDir.resolve("defaultconfigs"));
             FileUtil.copyDir(mcPaths[1], buildDir.resolve("config"));
-            FileUtil.copyDir(mcPaths[2], buildDir.resolve("mods"));
-            FileUtil.copyDir(mcPaths[3], buildDir.resolve("resources"));
-            FileUtil.copyDir(mcPaths[5], buildDir.resolve("scripts"));
+            FileUtil.copyDir(mcPaths[2], buildDir.resolve("kubejs"));
+            FileUtil.copyDir(mcPaths[3], buildDir.resolve("mods"));
+            FileUtil.copyDir(mcPaths[4], buildDir.resolve("resources"));
+            FileUtil.copyDir(mcPaths[6], buildDir.resolve("scripts"));
 
             String zipName = getAppConfig().getPackName() + "_server-" + getAppConfig().getPackVersion() + ".zip";
             Path zipPath = buildDir.getParent().resolve(zipName);

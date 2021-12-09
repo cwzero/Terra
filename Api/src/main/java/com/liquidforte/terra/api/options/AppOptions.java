@@ -40,4 +40,6 @@ public interface AppOptions {
     String getCachePath();
 
     String getDefaultConfigPath();
+
+    String getKubeJSPath();
 }

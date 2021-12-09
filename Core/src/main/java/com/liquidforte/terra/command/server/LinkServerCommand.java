@@ -26,6 +26,7 @@ public class LinkServerCommand extends AbstractCommand {
         Path[] mcPaths = {
                 getAppPaths().getMCDefaultConfigPath(),
                 getAppPaths().getMCConfigPath(),
+                getAppPaths().getMCKubeJSPath(),
                 getAppPaths().getMCModsPath(),
                 getAppPaths().getMCResourcesPath(),
                 getAppPaths().getMCSavesPath(),
@@ -35,6 +36,7 @@ public class LinkServerCommand extends AbstractCommand {
         Path[] serverPaths = {
                 getAppPaths().getServerDefaultConfigPath(),
                 getAppPaths().getServerConfigPath(),
+                getAppPaths().getServerKubeJSPath(),
                 getAppPaths().getServerModsPath(),
                 getAppPaths().getServerResourcesPath(),
                 getAppPaths().getServerSavesPath(),

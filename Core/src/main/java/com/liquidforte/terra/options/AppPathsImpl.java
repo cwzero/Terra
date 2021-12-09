@@ -129,6 +129,11 @@ public class AppPathsImpl implements AppPaths {
     }
 
     @Override
+    public Path getMCKubeJSPath() {
+        return getMCPath().resolve(appOptions.getKubeJSPath());
+    }
+
+    @Override
     public Path getMMCConfigPath() {
         return getMMCMCPath().resolve(appOptions.getConfigPath());
     }
@@ -146,6 +151,11 @@ public class AppPathsImpl implements AppPaths {
     @Override
     public Path getMMCSavesPath() {
         return getMMCMCPath().resolve(appOptions.getSavesPath());
+    }
+
+    @Override
+    public Path getMMCKubeJSPath() {
+        return getMMCMCPath().resolve(appOptions.getKubeJSPath());
     }
 
     @Override
@@ -176,6 +186,11 @@ public class AppPathsImpl implements AppPaths {
     @Override
     public Path getServerSavesPath() {
         return getServerPath().resolve(appOptions.getSavesPath());
+    }
+
+    @Override
+    public Path getServerKubeJSPath() {
+        return getServerPath().resolve(appOptions.getKubeJSPath());
     }
 
     @Override
